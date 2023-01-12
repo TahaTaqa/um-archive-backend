@@ -1,0 +1,10 @@
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const httpServer = require('http').createServer(app)
+const loginRoutes = require('./routes/loginRoutes')
+app.use(cors())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use('/login',loginRoutes )
+httpServer.listen(5000)
