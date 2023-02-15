@@ -11,5 +11,5 @@ exports.findUserByEmail = async (email) => {
       throw err;
     });
   console.log(res.length);
-  return res.length ? res : false;
+  return res.length ? res[0] : false;
 };
