@@ -1,7 +1,7 @@
-const { findUserByEmail } = require("../models/commonModle");
+const { findUserByEmail, addToken } = require("../models/commonModle");
 const apiError = require("../utils/apiError");
 const bycrypt = require("bcrypt");
-const { signup, addToken } = require("../models/signupModle");
+const { signup } = require("../models/signupModle");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res, next) => {
@@ -13,7 +13,6 @@ exports.signup = async (req, res, next) => {
       return;
     } else {
       if (user.password) {
-        console.log("wewe", user);
         next(apiError.duplicated("الحساب مسجل مسبقاََ"));
         return;
       } else {
@@ -31,14 +30,12 @@ exports.signup = async (req, res, next) => {
         );
         await addToken(user.id, token);
         await signup(email, hashedPassword);
-        res
-          .status(201)
-          .json({
-            token: refreashToken,
-            id: user.id,
-            type: user.type,
-            status: 201,
-          });
+        res.status(201).json({
+          token: refreashToken,
+          id: user.id,
+          type: user.type,
+          status: 201,
+        });
       }
     }
   } catch (err) {

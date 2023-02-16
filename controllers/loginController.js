@@ -1,6 +1,7 @@
-const { findUserByEmail } = require("../models/commonModle");
+const { findUserByEmail, addToken } = require("../models/commonModle");
 const apiError = require("../utils/apiError");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 exports.login = async (req, res, next) => {
   let { email, password } = req.body;
   try {
@@ -18,7 +19,23 @@ exports.login = async (req, res, next) => {
           next(apiError.unauthorized("الرمز غير صحيح"));
           return;
         } else {
-          res.status(200).send();
+          let token = await jwt.sign(
+            { id: user.id, department: user.department, type: user.type },
+            process.env.SECRET,
+            { expiresIn: "180d" }
+          );
+          let refreashToken = await jwt.sign(
+            { id: user.id, department: user.department, type: user.type },
+            process.env.SECRET,
+            { expiresIn: "2h" }
+          );
+          await addToken(user.id, token);
+          res.status(200).json({
+            token: refreashToken,
+            id: user.id,
+            type: user.type,
+            status: 200,
+          });
         }
       }
     }

@@ -11,14 +11,3 @@ exports.signup = async (email, password) => {
       throw err;
     });
 };
-exports.addToken = async (id, token) => {
-  const text = "INSERT INTO user_token (user_id,token) VALUES(?,?)";
-  const vals = [id, token];
-  let res = await db
-    .promise()
-    .query(text, vals)
-    .then(([rows]) => rows)
-    .catch((err) => {
-      throw err;
-    });
-};
