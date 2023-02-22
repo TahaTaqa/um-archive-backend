@@ -1,4 +1,4 @@
-const { addUser, getNames } = require("../models/adminModle");
+const { addUser, getNames, addActivity } = require("../models/adminModle");
 const { findUserByEmail } = require("../models/commonModle");
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
@@ -28,11 +28,15 @@ exports.addActivity = (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(req.body);
+      addActivity(req.body);
     }
   });
 };
-exports.getNames = (req, res, next) => {
-  getNames(req.query.string);
-  res.end();
+exports.getNames = async (req, res, next) => {
+  try {
+    const names = await getNames(req.query.string);
+    res.json(names);
+  } catch (err) {
+    next(err);
+  }
 };

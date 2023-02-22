@@ -19,7 +19,6 @@ exports.refresh = async (req, res, next) => {
     } else {
       const mainToken = await findToken(expired.id);
       const user = await findUserById(expired.id);
-      console.log(mainToken);
 
       if (!mainToken) {
         next(apiError.unauthorized());
