@@ -28,7 +28,8 @@ exports.addActivity = (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      addActivity(req.body);
+      addActivity(req.body, req.files);
+      res.status(201).json({ status: 201 });
     }
   });
 };
