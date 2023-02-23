@@ -39,11 +39,21 @@ exports.addActivity = async (data, files) => {
     barcode,
     privateOptin,
     participants,
+    link,
   } = data;
   barcode = barcode || customAlphabet("1234567890", 12)();
   let text =
-    "INSERT INTO activities (title,location,summary,start_date,end_date,order_date,barcode_id) VALUES(?,?,?,?,?,?,?); ";
-  let vals = [title, location, summary, dateFrom, dateTo, orderDate, barcode];
+    "INSERT INTO activities (title,location,summary,start_date,end_date,order_date,barcode_id,link) VALUES(?,?,?,?,?,?,?,?); ";
+  let vals = [
+    title,
+    location,
+    summary,
+    dateFrom,
+    dateTo,
+    orderDate,
+    barcode,
+    link,
+  ];
   let res = await db
     .promise()
     .query(text, vals)
@@ -87,4 +97,31 @@ exports.addActivity = async (data, files) => {
         });
     });
   }
+};
+exports.getActivites = async (query) => {
+  const { string, dateFrom, dateTo, department } = query;
+  let text;
+  let vals;
+  if (dateFrom && dateTo) {
+    text =
+      " SELECT a.*, COUNT(a.id) AS participants FROM activities AS a INNER JOIN activity_user AS u ON a.id = u.activity_id    WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') AND a.start_date >= ? AND a.end_date <= ? AND  (title LIKE COALESCE(CONCAT(?,'%'),'%') OR barcode_id LIKE COALESCE(CONCAT(?,'%'),'%')) GROUP BY a.id;";
+    vals = [department, dateFrom, dateTo, string, string];
+  } else if (dateFrom) {
+    text =
+      " SELECT a.*, COUNT(a.id) AS participants FROM activities AS a INNER JOIN activity_user AS u ON a.id = u.activity_id    WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') AND a.start_date >= ? AND  (title LIKE COALESCE(CONCAT(?,'%'),'%') OR barcode_id LIKE COALESCE(CONCAT(?,'%'),'%')) GROUP BY a.id;";
+    vals = [department, dateFrom, string, string];
+  } else {
+    text =
+      " SELECT a.*, COUNT(a.id) AS participants FROM activities AS a INNER JOIN activity_user AS u ON a.id = u.activity_id    WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') AND  (title LIKE COALESCE(CONCAT(?,'%'),'%') OR barcode_id LIKE COALESCE(CONCAT(?,'%'),'%')) GROUP BY a.id;";
+    vals = [department, string, string];
+  }
+  let res = await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  console.log("trtrtr", res);
+  return res;
 };

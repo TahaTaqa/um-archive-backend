@@ -1,4 +1,9 @@
-const { addUser, getNames, addActivity } = require("../models/adminModle");
+const {
+  addUser,
+  getNames,
+  addActivity,
+  getActivites,
+} = require("../models/adminModle");
 const { findUserByEmail } = require("../models/commonModle");
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
@@ -26,10 +31,14 @@ exports.addUser = async (req, res, next) => {
 exports.addActivity = (req, res, next) => {
   images(req, res, async (err) => {
     if (err) {
-      console.log(err);
+      next(err);
     } else {
-      addActivity(req.body, req.files);
-      res.status(201).json({ status: 201 });
+      try {
+        addActivity(req.body, req.files);
+        res.status(201).json({ status: 201 });
+      } catch (err) {
+        next(err);
+      }
     }
   });
 };
@@ -40,4 +49,10 @@ exports.getNames = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.getActivites = (req, res, next) => {
+  console.log(req.query);
+  getActivites(req.query);
+  res.end();
 };
