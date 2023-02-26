@@ -23,12 +23,21 @@ exports.addUser = async (req, res, next) => {
       return;
     }
     await addUser(req.body);
+
+    if (req.userType !== "admin") {
+      next(apiError.unauthorized());
+      return;
+    }
     res.status(201).json({ status: 201 });
   } catch (err) {
     next(err);
   }
 };
 exports.addActivity = (req, res, next) => {
+  if (req.userType !== "admin") {
+    next(apiError.unauthorized());
+    return;
+  }
   images(req, res, async (err) => {
     if (err) {
       next(err);
@@ -51,8 +60,20 @@ exports.getNames = async (req, res, next) => {
   }
 };
 
-exports.getActivites = (req, res, next) => {
-  console.log(req.query);
-  getActivites(req.query);
-  res.end();
+exports.getActivites = async (req, res, next) => {
+  let userType = req.userType;
+  let userDepartment = req.userDepartment;
+  let userId = req.id;
+  try {
+    const data = await getActivites(
+      req.query,
+      userType,
+      userDepartment,
+      userId
+    );
+
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
 };

@@ -12,9 +12,9 @@ const Auth = (req, res, next) => {
   try {
     rawToken = token.split(" ")[1];
     const decoded = jwt.verify(rawToken, secret);
-
     req.id = decoded.id;
     req.userType = decoded.type;
+    req.userDepartment = decoded.department;
 
     if (!decoded) {
       next(apiError.unauthorized("unauthorized"));
@@ -31,4 +31,4 @@ const Auth = (req, res, next) => {
   next();
 };
 
-module.exports = strictAuth;
+module.exports = Auth;
