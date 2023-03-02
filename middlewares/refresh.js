@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 exports.refresh = async (req, res, next) => {
   token = req.get("Authorization");
+  console.log(token);
   if (!token) {
     return res.json("null");
   }

@@ -43,7 +43,7 @@ exports.addActivity = (req, res, next) => {
       next(err);
     } else {
       try {
-        addActivity(req.body, req.files);
+        await addActivity(req.body, req.files);
         res.status(201).json({ status: 201 });
       } catch (err) {
         next(err);

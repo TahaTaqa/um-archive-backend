@@ -1,6 +1,6 @@
 const db = require("../data/db");
 exports.findUserByEmail = async (email) => {
-  let text = "SELECT * FROM employees WHERE email = ?";
+  let text = "SELECT * FROM users WHERE email = ?";
   let vals = [email];
 
   let res = await db
@@ -15,7 +15,7 @@ exports.findUserByEmail = async (email) => {
 };
 
 exports.findUserById = async (id) => {
-  let text = "SELECT * FROM employees WHERE id = ?";
+  let text = "SELECT * FROM users WHERE user_id = ?";
   let vals = [id];
 
   let res = await db

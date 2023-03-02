@@ -20,16 +20,16 @@ exports.login = async (req, res, next) => {
           return;
         } else {
           let token = await jwt.sign(
-            { id: user.id, department: user.department, type: user.type },
+            { id: user.user_id, department: user.department, type: user.type },
             process.env.SECRET,
             { expiresIn: "180d" }
           );
           let refreashToken = await jwt.sign(
-            { id: user.id, department: user.department, type: user.type },
+            { id: user.user_id, department: user.department, type: user.type },
             process.env.SECRET,
             { expiresIn: "2h" }
           );
-          await addToken(user.id, token);
+          await addToken(user.user_id, token);
           res.status(200).json({
             token: refreashToken,
             id: user.id,
