@@ -142,3 +142,23 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
 
   return res;
 };
+exports.deleteActivity = async (id) => {
+  console.log(id);
+  let text = "DELETE FROM activities WHERE activity_id = ?";
+  let vals = [id];
+  await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  let text_2 = "DELETE FROM activities_has_users WHERE activity_id = ?";
+  await db
+    .promise()
+    .query(text_2, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+};

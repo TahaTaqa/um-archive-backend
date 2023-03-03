@@ -3,6 +3,7 @@ const {
   getNames,
   addActivity,
   getActivites,
+  deleteActivity,
 } = require("../models/adminModle");
 const { findUserByEmail } = require("../models/commonModle");
 const multer = require("multer");
@@ -73,6 +74,14 @@ exports.getActivites = async (req, res, next) => {
     );
 
     res.json(data);
+  } catch (err) {
+    next(err);
+  }
+};
+exports.deleteActivity = async (req, res, next) => {
+  try {
+    await deleteActivity(req.body.activityId);
+    res.status(201).json({ status: 201 });
   } catch (err) {
     next(err);
   }
