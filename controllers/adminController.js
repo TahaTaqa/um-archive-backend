@@ -86,3 +86,21 @@ exports.deleteActivity = async (req, res, next) => {
     next(err);
   }
 };
+exports.updateActivity = (req, res, next) => {
+  if (req.userType !== "admin") {
+    next(apiError.unauthorized());
+    return;
+  }
+  images(req, res, async (err) => {
+    if (err) {
+      next(err);
+    } else {
+      try {
+        console.log(req.body, req.files);
+        res.end();
+      } catch (err) {
+        next(err);
+      }
+    }
+  });
+};

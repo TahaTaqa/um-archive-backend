@@ -30,6 +30,7 @@ exports.getNames = async (string) => {
   return res;
 };
 exports.addActivity = async (data, files) => {
+  console.log(data);
   let {
     title,
     location,
@@ -42,10 +43,11 @@ exports.addActivity = async (data, files) => {
     participants,
     link,
     department,
+    type,
   } = data;
   barcode = barcode || `AC-${customAlphabet("1234567890", 12)()}`;
   let text =
-    "INSERT INTO activities (title,location,summary,start_date,end_date,order_date,barcode_id,link,department) VALUES(?,?,?,?,?,?,?,?,?); ";
+    "INSERT INTO activities (title,location,summary,start_date,end_date,order_date,barcode_id,link,department,type) VALUES(?,?,?,?,?,?,?,?,?,?); ";
   let vals = [
     title,
     location,
@@ -56,6 +58,7 @@ exports.addActivity = async (data, files) => {
     barcode,
     link,
     department,
+    type,
   ];
   let res = await db
     .promise()
