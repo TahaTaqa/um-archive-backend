@@ -28,11 +28,11 @@ exports.refresh = async (req, res, next) => {
         const valid = await jwt.verify(mainToken.token, process.env.SECRET);
         if (valid) {
           const newToken = await jwt.sign(
-            { id: user.id, department: user.department, type: user.type },
+            { id: user.user_id, department: user.department, type: user.type },
             process.env.SECRET,
             { expiresIn: "2h" }
           );
-          res.json({ token: newToken, id: user.id, type: user.type });
+          res.json({ token: newToken, id: user.user_id, type: user.type });
         } else {
           next(apiError.unauthorized());
         }

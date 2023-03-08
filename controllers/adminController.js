@@ -4,6 +4,7 @@ const {
   addActivity,
   getActivites,
   deleteActivity,
+  updateActivity,
 } = require("../models/adminModle");
 const { findUserByEmail } = require("../models/commonModle");
 const multer = require("multer");
@@ -65,6 +66,7 @@ exports.getActivites = async (req, res, next) => {
   let userType = req.userType;
   let userDepartment = req.userDepartment;
   let userId = req.id;
+  console.log("jyjyj", userId);
   try {
     const data = await getActivites(
       req.query,
@@ -86,7 +88,7 @@ exports.deleteActivity = async (req, res, next) => {
     next(err);
   }
 };
-exports.updateActivity = (req, res, next) => {
+exports.updateActivity = async (req, res, next) => {
   if (req.userType !== "admin") {
     next(apiError.unauthorized());
     return;
@@ -96,8 +98,8 @@ exports.updateActivity = (req, res, next) => {
       next(err);
     } else {
       try {
-        console.log(req.body, req.files);
-        res.end();
+        await updateActivity(req.body, req.files);
+        res.status(200).json({ status: 204 });
       } catch (err) {
         next(err);
       }

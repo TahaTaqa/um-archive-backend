@@ -19,20 +19,20 @@ exports.signup = async (req, res, next) => {
         let hashedPassword = await bycrypt.hash(password, 10);
 
         let token = await jwt.sign(
-          { id: user.id, department: user.department, type: user.type },
+          { id: user.user_id, department: user.department, type: user.type },
           process.env.SECRET,
           { expiresIn: "180d" }
         );
         let refreashToken = await jwt.sign(
-          { id: user.id, department: user.department, type: user.type },
+          { id: user.user_id, department: user.department, type: user.type },
           process.env.SECRET,
           { expiresIn: "2h" }
         );
-        await addToken(user.id, token);
+        await addToken(user.user_id, token);
         await signup(email, hashedPassword);
         res.status(201).json({
           token: refreashToken,
-          id: user.id,
+          id: user.user_id,
           type: user.type,
           status: 201,
         });
