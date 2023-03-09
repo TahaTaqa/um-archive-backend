@@ -5,6 +5,8 @@ const {
   getActivites,
   deleteActivity,
   updateActivity,
+  getUsers,
+  deleteUser,
 } = require("../models/adminModle");
 const { findUserByEmail } = require("../models/commonModle");
 const multer = require("multer");
@@ -66,7 +68,7 @@ exports.getActivites = async (req, res, next) => {
   let userType = req.userType;
   let userDepartment = req.userDepartment;
   let userId = req.id;
-  console.log("jyjyj", userId);
+
   try {
     const data = await getActivites(
       req.query,
@@ -83,7 +85,15 @@ exports.getActivites = async (req, res, next) => {
 exports.deleteActivity = async (req, res, next) => {
   try {
     await deleteActivity(req.body.activityId);
-    res.status(201).json({ status: 201 });
+    res.status(200).json({ status: 200 });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.deleteUser = async (req, res, next) => {
+  try {
+    await deleteUser(req.body.userId);
+    res.status(200).json({ status: 200 });
   } catch (err) {
     next(err);
   }
@@ -105,4 +115,21 @@ exports.updateActivity = async (req, res, next) => {
       }
     }
   });
+};
+
+exports.getUsers = async (req, res, next) => {
+  let userType = req.userType;
+  let userDepartment = req.userDepartment;
+
+  if (req.userType === "user") {
+    next(apiError.unauthorized());
+    return;
+  }
+  try {
+    let data = await getUsers(req.query);
+    console.log(data, req.query);
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
 };

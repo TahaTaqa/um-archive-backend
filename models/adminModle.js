@@ -1,6 +1,7 @@
 const db = require("../data/db");
 const { customAlphabet } = require("nanoid");
 const { getActivitesSql } = require("../sql/getActivitesSql");
+const { getUserSql } = require("../sql/getUsersSql");
 exports.addUser = async ({ name, email, phone, department, superviser }) => {
   let type = superviser ? "superviser" : "user";
   let text =
@@ -119,20 +120,18 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
   }
 
   if (userType === "user") {
-    console.log("dwdw");
     if (dateFrom && dateTo) {
-      text = getActivitesSql.user_sql_1;
+      text = getActivitesSql.user_sql_3;
       vals = vals = [userId, dateFrom, dateTo, string, string];
     } else if (dateFrom) {
-      text =
-        " SELECT a.*,  a.activity_id  as id, COUNT(a.activity_id ) AS participants_count , JSON_ARRAYAGG(JSON_OBJECT('name', u.name, 'id', u.id, 'email', u.email)) as participants FROM activities AS a INNER JOIN activity_user AS u ON a.activity_id  = u.activity_id   WHERE a.activity_id  IN (SELECT activity_id FROM activity_user WHERE user_id = ?)   AND a.start_date >= ? AND  (title LIKE COALESCE(CONCAT(?,'%'),'%') OR barcode_id LIKE COALESCE(CONCAT(?,'%'),'%')) GROUP BY a.activity_id ;";
+      text = getActivitesSql.user_sql_2;
       vals = vals = [userId, dateFrom, string, string];
     } else {
       text = getActivitesSql.user_sql_1;
       vals = [userId, string, string];
     }
   }
-  console.log("dw", userId);
+
   let res = await db
     .promise()
     .query(text, vals)
@@ -155,6 +154,26 @@ exports.deleteActivity = async (id) => {
       throw err;
     });
   let text_2 = "DELETE FROM activities_has_users WHERE activity_id = ?";
+  await db
+    .promise()
+    .query(text_2, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+};
+exports.deleteUser = async (id) => {
+  console.log(id);
+  let text = "DELETE FROM users WHERE user_id = ?";
+  let vals = [id];
+  await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  let text_2 = "DELETE FROM activities_has_users WHERE user_id = ?";
   await db
     .promise()
     .query(text_2, vals)
@@ -253,4 +272,19 @@ exports.updateActivity = async (data, files) => {
         });
     });
   }
+};
+exports.getUsers = async (query) => {
+  let { string, department } = query;
+  let text = getUserSql.sql_1;
+  let vals = [string, department];
+  console.log(vals);
+  let res = await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+
+  return res;
 };
