@@ -7,8 +7,12 @@ const {
   updateActivity,
   getUsers,
   deleteUser,
+  updateUser,
 } = require("../models/adminModle");
-const { findUserByEmail } = require("../models/commonModle");
+const {
+  findUserByEmail,
+  findUserByEmailNoId,
+} = require("../models/commonModle");
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
 const apiError = require("../utils/apiError");
@@ -118,9 +122,6 @@ exports.updateActivity = async (req, res, next) => {
 };
 
 exports.getUsers = async (req, res, next) => {
-  let userType = req.userType;
-  let userDepartment = req.userDepartment;
-
   if (req.userType === "user") {
     next(apiError.unauthorized());
     return;
@@ -129,6 +130,25 @@ exports.getUsers = async (req, res, next) => {
     let data = await getUsers(req.query);
     console.log(data, req.query);
     res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  console.log(req.body);
+  if (req.userType !== "admin") {
+    next(apiError.unauthorized());
+    return;
+  }
+  if (await findUserByEmailNoId(req.body.email, req.body.id)) {
+    next(apiError.duplicated("يوجد حساب مسجل لهذا البريد"));
+
+    return;
+  }
+  try {
+    await updateUser(req.body);
+    res.status(201).json({ status: 201 });
   } catch (err) {
     next(err);
   }

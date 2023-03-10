@@ -51,3 +51,18 @@ exports.addToken = async (id, token) => {
       throw err;
     });
 };
+
+exports.findUserByEmailNoId = async (email, id) => {
+  let text = "SELECT * FROM users WHERE email = ? AND user_id != ?";
+  let vals = [email, id];
+
+  let res = await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  console.log(res);
+  return res.length ? res[0] : false;
+};

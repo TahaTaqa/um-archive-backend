@@ -8,6 +8,7 @@ const {
   updateActivity,
   getUsers,
   deleteUser,
+  updateUser,
 } = require("../controllers/adminController");
 
 router = express.Router();
@@ -19,4 +20,5 @@ router.get("/get-users", getUsers);
 router.delete("/delete-activity", deleteActivity);
 router.delete("/delete-user", deleteUser);
 router.put("/update-activity", updateActivity);
+router.put("/update-user", updateUser);
 module.exports = router;

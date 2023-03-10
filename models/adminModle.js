@@ -2,8 +2,8 @@ const db = require("../data/db");
 const { customAlphabet } = require("nanoid");
 const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
-exports.addUser = async ({ name, email, phone, department, superviser }) => {
-  let type = superviser ? "superviser" : "user";
+exports.addUser = async ({ name, email, phone, department, supervisor }) => {
+  let type = supervisor ? "supervisor" : "user";
   let text =
     "INSERT INTO users (name,email,phone_number,department,type) VALUES(?,?,?,?,?)";
   let vals = [name, email, phone, department, type];
@@ -115,7 +115,7 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
     text = getActivitesSql.sql_1;
     vals = [department, string, string];
   }
-  if (userType === "superviser") {
+  if (userType === "supervisor") {
     vals[0] = userDepartment;
   }
 
@@ -287,4 +287,19 @@ exports.getUsers = async (query) => {
     });
 
   return res;
+};
+
+exports.updateUser = async (data) => {
+  let { name, department, email, phone, supervisor, id } = data;
+  let type = supervisor ? "supervisor" : "user";
+  let text =
+    "UPDATE users SET name = ?, email = ?, phone_number = ? , department = ? ,type = ? WHERE user_id = ?";
+  let vals = [name, email, phone, department, type, id];
+  await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
 };
