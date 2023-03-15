@@ -16,6 +16,7 @@ const {
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
 const apiError = require("../utils/apiError");
+const { sendEmailNotification } = require("../middlewares/emailNoti");
 
 const images = multer({
   storage: multerHelper.imageStorage,
@@ -52,6 +53,7 @@ exports.addActivity = (req, res, next) => {
     } else {
       try {
         await addActivity(req.body, req.files);
+
         res.status(201).json({ status: 201 });
       } catch (err) {
         next(err);

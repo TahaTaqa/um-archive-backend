@@ -2,6 +2,7 @@ const db = require("../data/db");
 const { customAlphabet } = require("nanoid");
 const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
+const { sendEmailNotification } = require("../middlewares/emailNoti");
 exports.addUser = async ({ name, email, phone, department, supervisor }) => {
   let type = supervisor ? "supervisor" : "user";
   let text =
@@ -31,7 +32,6 @@ exports.getNames = async (string) => {
   return res;
 };
 exports.addActivity = async (data, files) => {
-  console.log(data);
   let {
     title,
     location,
@@ -99,6 +99,14 @@ exports.addActivity = async (data, files) => {
           throw err;
         });
     });
+  }
+  try {
+    let emails = JSON.parse(participants).map(
+      (participant) => participant.email
+    );
+    sendEmailNotification(emails, title, orderDate, barcode);
+  } catch (err) {
+    console.log(err);
   }
 };
 exports.getActivites = async (query, userType, userDepartment, userId) => {
