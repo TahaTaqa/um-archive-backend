@@ -16,14 +16,29 @@ const {
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
 const apiError = require("../utils/apiError");
-const { sendEmailNotification } = require("../middlewares/emailNoti");
 
+const nodemailer = require("nodemailer");
+const path = require("path");
+const fs = require("fs");
 const images = multer({
   storage: multerHelper.imageStorage,
   fileFilter: multerHelper.imageFilter,
   limits: { fileSize: 4000000 },
 }).array("images", "10");
-
+const emailObj = multer({
+  storage: multerHelper.fileStorage,
+  fileFilter: multerHelper.fileFilter,
+  limits: { fileSize: 10000000 },
+}).fields([
+  {
+    name: "file",
+    maxCount: 1,
+  },
+  {
+    name: "image",
+    maxCount: 1,
+  },
+]);
 exports.addUser = async (req, res, next) => {
   try {
     if (await findUserByEmail(req.body.email)) {
@@ -154,4 +169,61 @@ exports.updateUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+exports.sendEmail = async (req, res, next) => {
+  emailObj(req, res, async (err) => {
+    if (err) {
+      next(err);
+    } else {
+      var transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+          user: "um-archive@outlook.com",
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      var mailOptions = {
+        from: "um-archive@outlook.com",
+        to: "ibn.maher.96@gmail.com",
+        subject: `رسالة من ${req.body.email}`,
+        text: `${req.body.subject}`,
+
+        attachments: [],
+      };
+      if (req.files.file) {
+        mailOptions.attachments.push({
+          filename: `${req.files.file[0].originalname}`,
+          path: req.files.file[0].path,
+          contentType: "application/pdf",
+        });
+      }
+      if (req.files.image) {
+        mailOptions.attachments.push({
+          filename: `${req.files.image[0].originalname}`,
+          path: req.files.image[0].path,
+          contentType: "image/*",
+        });
+      }
+      await transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          next(err);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+    }
+    if (req.files.file) {
+      setTimeout(() => {
+        fs.unlink(req.files.file[0].path, (err) => console.log(err));
+      }, [5000]);
+    }
+    if (req.files.image) {
+      setTimeout(() => {
+        fs.unlink(req.files.image[0].path, (err) => console.log(err));
+      }, [5000]);
+    }
+  });
+
+  res.status(200).json({ status: 200 });
 };

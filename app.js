@@ -11,6 +11,7 @@ const errorHandle = require("./middlewares/errorHandle");
 const { refresh } = require("./middlewares/refresh");
 const path = require("path");
 const Auth = require("./middlewares/auth");
+const fs = require("fs");
 const { sendEmailNotification } = require("./middlewares/emailNoti");
 
 app.use(cors());
@@ -24,5 +25,5 @@ app.use("/login", loginRoutes);
 app.use("/signup", signupRoutes);
 app.use("/admin", Auth, adminRoutes);
 app.use(errorHandle);
-// sendEmailNotification(["ibn.maher.96@gmail.com"]);
+
 httpServer.listen(5000);

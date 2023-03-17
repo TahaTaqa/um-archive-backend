@@ -25,7 +25,7 @@ exports.sendEmailNotification = async (emails, title, orderDate, barcode) => {
   var mailOptions = {
     from: "um-archive@outlook.com",
     to: emails,
-    subject: "test",
+    subject: "تم الموافقة على النشاط",
     html: htmlToSend,
 
     attachments: [
