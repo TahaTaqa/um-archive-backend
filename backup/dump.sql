@@ -1,0 +1,768 @@
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+# ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: activities
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `activities` (
+  `activity_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `location` varchar(45) DEFAULT NULL,
+  `summary` varchar(1000) DEFAULT NULL,
+  `barcode_id` varchar(45) NOT NULL,
+  `link` varchar(1000) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `order_date` date NOT NULL,
+  `department` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 94 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: activities_has_users
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `activities_has_users` (
+  `activity_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`activity_id`, `user_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: activity_image
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `activity_image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `url` varchar(1000) NOT NULL,
+  `private` varchar(10) NOT NULL,
+  `activity_id` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 75 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: user_token
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `user_token` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `token` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id_idx` (`user_id`),
+  CONSTRAINT `user_id_token` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 78 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: users
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `password` varchar(1000) DEFAULT NULL,
+  `department` varchar(100) NOT NULL,
+  `phone_number` varchar(45) DEFAULT NULL,
+  `type` varchar(45) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 36 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: activities
+# ------------------------------------------------------------
+
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    82,
+    'tre',
+    'نشاط داخلي',
+    'kkk',
+    'AC-503281018291',
+    'jyjyjyj',
+    NULL,
+    NULL,
+    '2023-03-02',
+    'هندسة',
+    'المحاضرات(السيمينرات)'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    83,
+    'test',
+    'نشاط داخلي',
+    'test',
+    'AC-713700104161',
+    '',
+    NULL,
+    NULL,
+    '2023-03-03',
+    'تربية',
+    'مناقشات طلبة الدراسات العليا'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    84,
+    'l',
+    'نشاط خارجي',
+    '',
+    'AC-091960552605',
+    '',
+    '2023-03-07',
+    '2023-03-08',
+    '2023-03-07',
+    'هندسة',
+    'المحاضرات(السيمينرات)'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    86,
+    'bfbfb',
+    'نشاط خارجي',
+    '',
+    'AC-631555770210',
+    '',
+    '2023-03-03',
+    '2023-03-09',
+    '2023-03-02',
+    'هندسة',
+    'المحاضرات(السيمينرات)'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    87,
+    'fefe',
+    'نشاط خارجي',
+    'fefef',
+    'AC-166048431211',
+    'efefe',
+    NULL,
+    NULL,
+    '2023-03-07',
+    'هندسة',
+    'المحاضرات(السيمينرات)'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    88,
+    'dgdggd',
+    'نشاط خارجي',
+    'kjgg',
+    'AC-956114700577',
+    '',
+    NULL,
+    NULL,
+    '2023-03-02',
+    'علوم حاسبات',
+    'المحاضرات(السيمينرات)'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    89,
+    'العنوان',
+    'نشاط خارجي',
+    NULL,
+    'AC-744948494770',
+    '',
+    NULL,
+    NULL,
+    '2023-03-01',
+    'هندسة',
+    'مناقشات طلبة الدراسات العليا'
+  );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    93,
+    'dwdw',
+    'نشاط خارجي',
+    NULL,
+    'AC-247266761125',
+    '',
+    NULL,
+    NULL,
+    '2023-03-07',
+    'هندسة',
+    'المحاضرات(السيمينرات)'
+  );
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: activities_has_users
+# ------------------------------------------------------------
+
+INSERT INTO
+  `activities_has_users` (`activity_id`, `user_id`)
+VALUES
+  (89, 1);
+INSERT INTO
+  `activities_has_users` (`activity_id`, `user_id`)
+VALUES
+  (89, 24);
+INSERT INTO
+  `activities_has_users` (`activity_id`, `user_id`)
+VALUES
+  (93, 29);
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: activity_image
+# ------------------------------------------------------------
+
+INSERT INTO
+  `activity_image` (`id`, `url`, `private`, `activity_id`)
+VALUES
+  (
+    71,
+    'images\\BlzTqNQJIlnMoXp2FCTIb-169990_v9_bb.jpg',
+    'true',
+    86
+  );
+INSERT INTO
+  `activity_image` (`id`, `url`, `private`, `activity_id`)
+VALUES
+  (
+    72,
+    'images\\51LHorZFsJNEJLslxGmZF-17735bb9ce7ba89b5fa2dc8eb2f19588069b7c83.jpg',
+    'false',
+    86
+  );
+INSERT INTO
+  `activity_image` (`id`, `url`, `private`, `activity_id`)
+VALUES
+  (
+    73,
+    'images\\5PfllHYKdUmkzvTBq0FPJ-17735bb9ce7ba89b5fa2dc8eb2f19588069b7c83.jpg',
+    'false',
+    90
+  );
+INSERT INTO
+  `activity_image` (`id`, `url`, `private`, `activity_id`)
+VALUES
+  (
+    74,
+    'images\\ieFq-TC4zAcHUIzN51Jbo-17735bb9ce7ba89b5fa2dc8eb2f19588069b7c83.jpg',
+    'false',
+    91
+  );
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: user_token
+# ------------------------------------------------------------
+
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    44,
+    NULL,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXBhcnRtZW50IjoiYWRtaW4iLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE2Nzc3NjIzNDcsImV4cCI6MTY5MzMxNDM0N30.5dp9iBnjjzjfBxXK40JHrZiSwpsQU-qjhAJQIf_Phyg'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    63,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNjc4MzkwODkzLCJleHAiOjE2OTM5NDI4OTN9.kr5uv8unR_tDgNo-iPbm8ve5g3XEgufgBOsd-B3lMZY'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    64,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNjc4NDc4ODA4LCJleHAiOjE2OTQwMzA4MDh9.FW8FEtGjIqhD4t1dISEyuc2O-GIBwP1AnrB1pN7w1Xg'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    65,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODU2NzYxOCwiZXhwIjoxNjk0MTE5NjE4fQ.UZWftj5tvzAriqNCawmYPIpgPrcT6IlSb9ymYwd2u-I'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    66,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODU2NzkzOSwiZXhwIjoxNjk0MTE5OTM5fQ.Hrr7CgZ3CMRFHYWFmA6yK7ZdWsH-V8RCceYkL6Pkh_w'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    67,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODU2ODEzMiwiZXhwIjoxNjk0MTIwMTMyfQ.LyQwJE5zZtWUFJrNr8nvs0BSMmKGATnNDVqt-zuj_Kk'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    68,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODU2ODk0OCwiZXhwIjoxNjk0MTIwOTQ4fQ.3qTX1j8a2RWD-nctNpBqNM1Lp3KQp5P4OjX2-8jpQsc'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    69,
+    25,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoic3VwZXJ2aXNvciIsImlhdCI6MTY3ODcyNzU1MywiZXhwIjoxNjk0Mjc5NTUzfQ.La04O2clq5qe3aIIc5FeM94Bcd_OfrTYbmDgz8OSJvs'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    70,
+    24,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2Nzg3MjgwNzYsImV4cCI6MTY5NDI4MDA3Nn0.ov1PQo4yy2XQTdeYC0fRajTwntwAVv5aIUjxNMjEuX4'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    71,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODcyODg2NiwiZXhwIjoxNjk0MjgwODY2fQ._iR4-f0XUSo4RJArXQwjBMqGU45oNHixZ76p1OK_Tko'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    72,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODkwNTA1OCwiZXhwIjoxNjk0NDU3MDU4fQ.q394Xf8xJDnSX6hzjBDiWcQg3TZ9K_BpBOXIB2GkuLg'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    73,
+    29,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjksImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InN1cGVydmlzb3IiLCJpYXQiOjE2Nzg5MDUxMDMsImV4cCI6MTY5NDQ1NzEwM30.VOZI4FoUrdVP7fstIzvaOvr2ebNIbSgIRtAIPK_vBCU'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    74,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3ODkwNTExNiwiZXhwIjoxNjk0NDU3MTE2fQ.eg4yLQKNiOFs1x72Zc9WqYDz7m5xEhoPqD2fGuvclE0'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    75,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTA3MTk1MiwiZXhwIjoxNjk0NjIzOTUyfQ.sPdeUtyI_0h2SF_WCE_oluBNS0xEbV3mi-TALI780ps'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    76,
+    24,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2NzkwNzIwODcsImV4cCI6MTY5NDYyNDA4N30.UONmMnhL2afBlKWm8xaRUZl-U6ILYCyCi_0d8HY_YIA'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    77,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTA3NDM5OCwiZXhwIjoxNjk0NjI2Mzk4fQ.o51cZyvvQ16BMdleSVeK1fObjwl3r47cnqcIdCb4MLI'
+  );
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: users
+# ------------------------------------------------------------
+
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    1,
+    'admin',
+    'admin@archive.com',
+    '$2b$10$0bhlL9EAnIz6FwvqhuADHO2y2yVLbAGjCGYHWmDT.oM2ERL3Jr6da',
+    'علوم حاسبات',
+    '07712345678',
+    'admin'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    24,
+    'red',
+    's2s2ssd2@f.h',
+    '$2b$10$921nxP0xVrlrndsP6w7Fa.Cif8IF/AixfPWYN/nil6ekk6idf9WuK',
+    'هندسة',
+    '07712345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    25,
+    'rere',
+    'fefe@f.c',
+    '$2b$10$42VgVmy8WncUP0LeDTIQnOLkuSB4oFYxeJQXXIFreDSd59Cd.7.jK',
+    'علوم حاسبات',
+    '07712345678',
+    'supervisor'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    26,
+    'hjhjjg',
+    'archive@admin.com',
+    NULL,
+    'علوم حاسبات',
+    '07512345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    27,
+    'dwdwd',
+    'dwdw@w.ci',
+    NULL,
+    'علوم حاسبات',
+    '07512345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    28,
+    'fwwfw',
+    'dwdw@w.ce',
+    NULL,
+    'تربية',
+    '07512345678',
+    'supervisor'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    29,
+    'عبدالرحمن ماهر حسن',
+    'ibn.maher.96@gmail.com',
+    '$2b$10$biKaPXQdSTt.pGs5ganW3OXLPvHC3TJVLzISjNdnc34DhfszzVOk2',
+    'هندسة',
+    '07512345678',
+    'supervisor'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    30,
+    'ق3ق3',
+    'fefe@gmail.com',
+    NULL,
+    'علوم حاسبات',
+    '07712345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    31,
+    'dwdwd',
+    'dede@gmail.xx',
+    NULL,
+    'هندسة',
+    '07512345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    32,
+    'dwdw',
+    'dwdw@w.tt',
+    NULL,
+    'هندسة',
+    '07512345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    33,
+    'e2e2',
+    'e2@e2e2.f',
+    NULL,
+    'هندسة',
+    '07512345678',
+    'supervisor'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    34,
+    'ewewe',
+    'hg@f.c',
+    NULL,
+    'علوم حاسبات',
+    '07512345678',
+    'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    35,
+    'dwdwd',
+    'dwd@dw.c',
+    NULL,
+    'هندسة',
+    '07512345678',
+    'user'
+  );
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

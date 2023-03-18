@@ -16,7 +16,7 @@ const {
 const multer = require("multer");
 const multerHelper = require("../utils/multerHelper");
 const apiError = require("../utils/apiError");
-
+const { dbBackup } = require("../middlewares/db_backup");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
@@ -226,4 +226,13 @@ exports.sendEmail = async (req, res, next) => {
   });
 
   res.status(200).json({ status: 200 });
+};
+exports.backup = async (req, res, next) => {
+  try {
+    await dbBackup();
+    res.set("Content-Disposition", `attachment; filename="dump.sql"`);
+    res.status(200).download(path.join(__dirname, "../backup/dump.sql"));
+  } catch (err) {
+    next(err);
+  }
 };
