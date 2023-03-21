@@ -32,7 +32,12 @@ exports.refresh = async (req, res, next) => {
             process.env.SECRET,
             { expiresIn: "2h" }
           );
-          res.json({ token: newToken, id: user.user_id, type: user.type });
+          res.json({
+            token: newToken,
+            id: user.user_id,
+            type: user.type,
+            name: user.name,
+          });
         } else {
           next(apiError.unauthorized());
         }

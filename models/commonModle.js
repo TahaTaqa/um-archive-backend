@@ -66,3 +66,17 @@ exports.findUserByEmailNoId = async (email, id) => {
   console.log(res);
   return res.length ? res[0] : false;
 };
+exports.findResetToken = async (token) => {
+  let text = `SELECT * FROM reset_token WHERE token = ?`;
+  let vals = [token];
+
+  let res = await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  console.log(res);
+  return res.length ? res[0] : false;
+};
