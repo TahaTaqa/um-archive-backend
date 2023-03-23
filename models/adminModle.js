@@ -3,6 +3,7 @@ const { customAlphabet } = require("nanoid");
 const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
 const { sendEmailNotification } = require("../middlewares/emailNoti");
+const fs = require("fs");
 exports.addUser = async ({ name, email, phone, department, type }) => {
   let text =
     "INSERT INTO users (name,email,phone_number,department,type) VALUES(?,?,?,?,?)";
@@ -150,7 +151,6 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
   return res;
 };
 exports.deleteActivity = async (id) => {
-  console.log(id);
   let text = "DELETE FROM activities WHERE activity_id = ?";
   let vals = [id];
   await db
@@ -168,6 +168,19 @@ exports.deleteActivity = async (id) => {
     .catch((err) => {
       throw err;
     });
+  let text_3 = "SELECT url FROM activity_image WHERE activity_id = ?";
+  let res = await db
+    .promise()
+    .query(text_3, [id])
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  res.map((image) => {
+    fs.unlink(image.url, (err) => {
+      console.error(err);
+    });
+  });
 };
 exports.deleteUser = async (id) => {
   console.log(id);
@@ -231,6 +244,21 @@ exports.updateActivity = async (data, files) => {
     .catch((err) => {
       throw err;
     });
+  if (deleteImages === "true") {
+    let text = "SELECT url FROM activity_image WHERE activity_id = ?";
+    let res = await db
+      .promise()
+      .query(text, [id])
+      .then(([rows]) => rows)
+      .catch((err) => {
+        throw err;
+      });
+    res.map((image) => {
+      fs.unlink(image.url, (err) => {
+        console.error(err);
+      });
+    });
+  }
   if (deleteImages === "true") {
     let text = "DELETE FROM activity_image WHERE activity_id = ?";
     let vals = [id];
