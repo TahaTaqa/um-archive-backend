@@ -3,8 +3,7 @@ const { customAlphabet } = require("nanoid");
 const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
 const { sendEmailNotification } = require("../middlewares/emailNoti");
-exports.addUser = async ({ name, email, phone, department, supervisor }) => {
-  let type = supervisor ? "supervisor" : "user";
+exports.addUser = async ({ name, email, phone, department, type }) => {
   let text =
     "INSERT INTO users (name,email,phone_number,department,type) VALUES(?,?,?,?,?)";
   let vals = [name, email, phone, department, type];
@@ -110,18 +109,18 @@ exports.addActivity = async (data, files) => {
   }
 };
 exports.getActivites = async (query, userType, userDepartment, userId) => {
-  const { string, dateFrom, dateTo, department } = query;
+  const { string, dateFrom, dateTo, department, type } = query;
   let text;
   let vals;
   if (dateFrom && dateTo) {
     text = getActivitesSql.sql_3;
-    vals = [department, dateFrom, dateTo, string, string];
+    vals = [department, type, dateFrom, dateTo, string, string];
   } else if (dateFrom) {
     text = getActivitesSql.sql_2;
-    vals = [department, dateFrom, string, string];
+    vals = [department, type, dateFrom, string, string];
   } else {
     text = getActivitesSql.sql_1;
-    vals = [department, string, string];
+    vals = [department, type, string, string];
   }
   if (userType === "supervisor") {
     vals[0] = userDepartment;
@@ -130,13 +129,13 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
   if (userType === "user") {
     if (dateFrom && dateTo) {
       text = getActivitesSql.user_sql_3;
-      vals = vals = [userId, dateFrom, dateTo, string, string];
+      vals = vals = [userId, dateFrom, dateTo, string, string, type];
     } else if (dateFrom) {
       text = getActivitesSql.user_sql_2;
-      vals = vals = [userId, dateFrom, string, string];
+      vals = vals = [userId, dateFrom, string, string, type];
     } else {
       text = getActivitesSql.user_sql_1;
-      vals = [userId, string, string];
+      vals = [userId, string, string, type];
     }
   }
 

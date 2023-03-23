@@ -27,12 +27,22 @@ exports.login = async (req, res, next) => {
           return;
         } else {
           let token = await jwt.sign(
-            { id: user.user_id, department: user.department, type: user.type },
+            {
+              id: user.user_id,
+              department: user.department,
+              type: user.type,
+              email: user.email,
+            },
             process.env.SECRET,
             { expiresIn: "180d" }
           );
           let refreashToken = await jwt.sign(
-            { id: user.user_id, department: user.department, type: user.type },
+            {
+              id: user.user_id,
+              department: user.department,
+              type: user.type,
+              email: user.email,
+            },
             process.env.SECRET,
             { expiresIn: "2h" }
           );
@@ -42,6 +52,7 @@ exports.login = async (req, res, next) => {
             id: user.id,
             name: user.name,
             type: user.type,
+            email: user.email,
             status: 200,
           });
         }
@@ -57,7 +68,7 @@ exports.reset = async (req, res, next) => {
   try {
     let user = await findUserByEmail(email);
     if (!user) {
-      next(apiError.notFound());
+      next(apiError.notFound("لايوجد حساب بهذا الاسم"));
       return;
     }
     let token = await jwt.sign({ id: user.user_id }, process.env.SECRET, {
@@ -67,13 +78,13 @@ exports.reset = async (req, res, next) => {
     var transporter = nodemailer.createTransport({
       service: "hotmail",
       auth: {
-        user: "um-archive@outlook.com",
+        user: "taha.21csp84@student.uomosul.edu.iq",
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
     var mailOptions = {
-      from: "um-archive@outlook.com",
+      from: "taha.21csp84@student.uomosul.edu.iq",
       to: email,
       subject: "تغيير الرمز",
       html: `<p> لتغيير الرمز اضغط  <a href="http://localhost/reset-password:${token}">هنا </a> </p>`,
@@ -86,8 +97,7 @@ exports.reset = async (req, res, next) => {
     //     console.log("Email sent: " + info.response);
     //   }
     // });
-    // res.status(200).json({ status: 200 });
-    next(apiError.badRequest());
+    res.status(200).json({ status: 200 });
   } catch (err) {
     next(err);
   }
@@ -100,7 +110,7 @@ exports.resetPassword = async (req, res, next) => {
     const db_token = await findResetToken(rawToken);
 
     if (!db_token) {
-      next(apiError.unauthorized());
+      next(apiError.unauthorized("حدث خطأ"));
       return;
     }
     const valid = jwt.verify(rawToken, process.env.SECRET);

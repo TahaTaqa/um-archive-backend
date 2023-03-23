@@ -28,7 +28,12 @@ exports.refresh = async (req, res, next) => {
         const valid = await jwt.verify(mainToken.token, process.env.SECRET);
         if (valid) {
           const newToken = await jwt.sign(
-            { id: user.user_id, department: user.department, type: user.type },
+            {
+              id: user.user_id,
+              department: user.department,
+              type: user.type,
+              email: user.email,
+            },
             process.env.SECRET,
             { expiresIn: "2h" }
           );
@@ -37,6 +42,7 @@ exports.refresh = async (req, res, next) => {
             id: user.user_id,
             type: user.type,
             name: user.name,
+            email: user.email,
           });
         } else {
           next(apiError.unauthorized());

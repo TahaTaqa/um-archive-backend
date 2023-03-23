@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `department` varchar(1000) DEFAULT NULL,
   `type` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 94 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 95 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: activities_has_users
@@ -48,6 +48,18 @@ CREATE TABLE IF NOT EXISTS `activity_image` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 75 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
+# SCHEMA DUMP FOR TABLE: reset_token
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `reset_token` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `token` varchar(2000) NOT NULL,
+  `user_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 30 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+# ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: user_token
 # ------------------------------------------------------------
 
@@ -58,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `user_token` (
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   CONSTRAINT `user_id_token` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 78 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 91 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: users
@@ -303,6 +315,34 @@ VALUES
     'هندسة',
     'المحاضرات(السيمينرات)'
   );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    94,
+    'ewew',
+    'نشاط خارجي',
+    'ewewe',
+    'AC-258205800444',
+    'ewewe',
+    NULL,
+    NULL,
+    '2023-03-07',
+    'علوم حاسبات',
+    'المحاضرات(السيمينرات)'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: activities_has_users
@@ -320,6 +360,10 @@ INSERT INTO
   `activities_has_users` (`activity_id`, `user_id`)
 VALUES
   (93, 29);
+INSERT INTO
+  `activities_has_users` (`activity_id`, `user_id`)
+VALUES
+  (94, 24);
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: activity_image
@@ -360,6 +404,35 @@ VALUES
     'images\\ieFq-TC4zAcHUIzN51Jbo-17735bb9ce7ba89b5fa2dc8eb2f19588069b7c83.jpg',
     'false',
     91
+  );
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: reset_token
+# ------------------------------------------------------------
+
+INSERT INTO
+  `reset_token` (`id`, `token`, `user_id`)
+VALUES
+  (
+    3,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImlhdCI6MTY3OTM5ODcwMCwiZXhwIjoxNjc5NDAyMzAwfQ.RCKvNuqGwmUMGJEP1EJS0xhiJ81STt9qEx-orWdSBdk',
+    '26'
+  );
+INSERT INTO
+  `reset_token` (`id`, `token`, `user_id`)
+VALUES
+  (
+    4,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjc5Mzk4NzI2LCJleHAiOjE2Nzk0MDIzMjZ9.L87jpPmV9qjKf-CFDz4lcJt2GpkmGba8UlGT5EEfS4w',
+    '1'
+  );
+INSERT INTO
+  `reset_token` (`id`, `token`, `user_id`)
+VALUES
+  (
+    29,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjksImlhdCI6MTY3OTQ5OTI1NiwiZXhwIjoxNjc5NTAyODU2fQ.FL5DIGd4wG9PisTUQYKiUgsk29N9N6MgFGhfTWRINLs',
+    '29'
   );
 
 # ------------------------------------------------------------
@@ -494,6 +567,110 @@ VALUES
     1,
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTA3NDM5OCwiZXhwIjoxNjk0NjI2Mzk4fQ.o51cZyvvQ16BMdleSVeK1fObjwl3r47cnqcIdCb4MLI'
   );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    78,
+    25,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoic3VwZXJ2aXNvciIsImlhdCI6MTY3OTE0MjAxMSwiZXhwIjoxNjk0Njk0MDExfQ.-0RVOzdusNspvNGdA9EmXvIkp2VlwVvfv_5tYSnWDos'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    79,
+    25,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoic3VwZXJ2aXNvciIsImlhdCI6MTY3OTE0MjAxMSwiZXhwIjoxNjk0Njk0MDExfQ.-0RVOzdusNspvNGdA9EmXvIkp2VlwVvfv_5tYSnWDos'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    80,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTE3NjA3NCwiZXhwIjoxNjk0NzI4MDc0fQ.hC8bjsMZtLrVO-NN3Z3V-AWIemUWlUJ9TSVQk7pJAD8'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    81,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTE3NjA3NCwiZXhwIjoxNjk0NzI4MDc0fQ.hC8bjsMZtLrVO-NN3Z3V-AWIemUWlUJ9TSVQk7pJAD8'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    82,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTM0ODE2OSwiZXhwIjoxNjk0OTAwMTY5fQ.9Ra-iD2eM67hOJQnUyWNqmqC8spYgGyhzbmhbpQzt8o'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    83,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTQwMDgzMCwiZXhwIjoxNjk0OTUyODMwfQ.BS3XSalmUyY57ayIS8MpaMZoOMv1LJSiAD4u1UZi3M8'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    84,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTQwMTA1MSwiZXhwIjoxNjk0OTUzMDUxfQ.AapvDTstd7pJ7IgkmIWMdcofVSxg9ifxmBEdFGXZTBQ'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    85,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTQwMTcwOSwiZXhwIjoxNjk0OTUzNzA5fQ.ATuOWZnQ5NChayQ5Df1ISj3WmqQV7lrwi26i66J-MHg'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    86,
+    29,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjksImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InN1cGVydmlzb3IiLCJpYXQiOjE2Nzk0MjYxMjksImV4cCI6MTY5NDk3ODEyOX0.S8K7Zq91IqMAv_yuC_c43Uy8UiTMWTq4-FlmLtkkLlU'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    87,
+    29,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjksImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InN1cGVydmlzb3IiLCJpYXQiOjE2Nzk0MjYzMzEsImV4cCI6MTY5NDk3ODMzMX0.gvWeaOx8eipkQzGsHrf26J0fkJEkX4R0RFt77YgOw_0'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    88,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTUwMTAyNCwiZXhwIjoxNjk1MDUzMDI0fQ.7U_d9ssVE-bUw0gDgaP-rpEQK1xGo0c0lbUeGWoyTx0'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    89,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTUwMTAyNCwiZXhwIjoxNjk1MDUzMDI0fQ.7U_d9ssVE-bUw0gDgaP-rpEQK1xGo0c0lbUeGWoyTx0'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    90,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTUwMTA0OCwiZXhwIjoxNjk1MDUzMDQ4fQ.Q7w60lCH2ofo2I4WlyAynPgYFn2EbMw0YTChsooOydI'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: users
@@ -574,7 +751,7 @@ VALUES
     26,
     'hjhjjg',
     'archive@admin.com',
-    NULL,
+    '$2b$10$wMhj85kFr9zIAoddSbSTfOvMRfdP2DLbFO3GelC9oILiM29zfN4.K',
     'علوم حاسبات',
     '07512345678',
     'user'
@@ -634,7 +811,7 @@ VALUES
     29,
     'عبدالرحمن ماهر حسن',
     'ibn.maher.96@gmail.com',
-    '$2b$10$biKaPXQdSTt.pGs5ganW3OXLPvHC3TJVLzISjNdnc34DhfszzVOk2',
+    '$2b$10$VGcRSKZTUJJT1UxMwR7Rh.dcxWtcxjveQF5DrVWDpkwhW024J0TTG',
     'هندسة',
     '07512345678',
     'supervisor'

@@ -178,13 +178,13 @@ exports.sendEmail = async (req, res, next) => {
       var transporter = nodemailer.createTransport({
         service: "hotmail",
         auth: {
-          user: "um-archive@outlook.com",
+          user: "taha.21csp84@student.uomosul.edu.iq",
           pass: process.env.EMAIL_PASSWORD,
         },
       });
 
       var mailOptions = {
-        from: "um-archive@outlook.com",
+        from: "taha.21csp84@student.uomosul.edu.iq",
         to: "ibn.maher.96@gmail.com",
         subject: `رسالة من ${req.body.email}`,
         text: `${req.body.subject}`,

@@ -17,13 +17,13 @@ exports.sendEmailNotification = async (emails, title, orderDate, barcode) => {
   var transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
-      user: "um-archive@outlook.com",
+      user: "taha.21csp84@student.uomosul.edu.iq",
       pass: process.env.EMAIL_PASSWORD,
     },
   });
 
   var mailOptions = {
-    from: "um-archive@outlook.com",
+    from: "taha.21csp84@student.uomosul.edu.iq",
     to: emails,
     subject: "تم الموافقة على النشاط",
     html: htmlToSend,
