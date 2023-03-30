@@ -7,6 +7,8 @@ exports.getActivitesSql = {
     url,
     'private',
     private )  ) FROM activity_image WHERE activity_image.activity_id = a.activity_id)  AS images,
+    (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+    url, 'name' , name ) ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
     (SELECT
         COUNT(activities_has_users.user_id) 
     FROM
@@ -57,6 +59,8 @@ ORDER BY
     url,
     'private',
     private )  ) FROM activity_image WHERE activity_image.activity_id = a.activity_id)  AS images,
+    (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+    url, 'name' , name ) ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
     (SELECT
         COUNT(activities_has_users.user_id) 
     FROM
@@ -110,6 +114,8 @@ ORDER BY
     url,
     'private',
     private )  ) FROM activity_image WHERE activity_image.activity_id = a.activity_id)  AS images,
+    (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+    url, 'name' , name ) ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
     (SELECT
         COUNT(activities_has_users.user_id) 
     FROM
@@ -163,6 +169,8 @@ ORDER BY
   (SELECT JSON_ARRAYAGG(JSON_OBJECT('url', url, 'private', private))
    FROM activity_image
    WHERE activity_image.private = 'false' AND activity_image.activity_id = a.activity_id) AS images,
+   (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+   url)  ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
   (SELECT COUNT(activities_has_users.user_id) 
    FROM activities_has_users 
    WHERE activities_has_users.activity_id = a.activity_id) AS participants_count,
@@ -236,6 +244,8 @@ GROUP BY a.activity_id
     url,
     'private',
     private )  ) FROM activity_image WHERE  activity_image.private = 'false' AND activity_image.activity_id = a.activity_id )  AS images,
+    (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+    url, 'name' , name ) ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
     (SELECT
         COUNT(activities_has_users.user_id) 
     FROM
@@ -289,6 +299,8 @@ ORDER BY
     url,
     'private',
     private )  ) FROM activity_image WHERE  activity_image.private = 'false' AND activity_image.activity_id = a.activity_id )  AS images,
+    (SELECT JSON_ARRAYAGG( JSON_OBJECT( 'url',
+    url, 'name' , name ) ) FROM activity_file WHERE activity_file.activity_id = a.activity_id)  AS files,
     (SELECT
         COUNT(activities_has_users.user_id) 
     FROM

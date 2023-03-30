@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `department` varchar(1000) DEFAULT NULL,
   `type` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 95 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: activities_has_users
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `activity_image` (
   `private` varchar(10) NOT NULL,
   `activity_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 75 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 76 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: reset_token
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `user_token` (
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   CONSTRAINT `user_id_token` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 91 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 99 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: users
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone_number` varchar(45) DEFAULT NULL,
   `type` varchar(45) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 36 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: activities
@@ -343,6 +343,34 @@ VALUES
     'علوم حاسبات',
     'المحاضرات(السيمينرات)'
   );
+INSERT INTO
+  `activities` (
+    `activity_id`,
+    `title`,
+    `location`,
+    `summary`,
+    `barcode_id`,
+    `link`,
+    `start_date`,
+    `end_date`,
+    `order_date`,
+    `department`,
+    `type`
+  )
+VALUES
+  (
+    95,
+    'test',
+    'نشاط خارجي',
+    'test',
+    'AC-783496876243',
+    '',
+    NULL,
+    NULL,
+    '2023-03-07',
+    'علوم الحاسوب',
+    'الدورات التدريبية'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: activities_has_users
@@ -364,6 +392,10 @@ INSERT INTO
   `activities_has_users` (`activity_id`, `user_id`)
 VALUES
   (94, 24);
+INSERT INTO
+  `activities_has_users` (`activity_id`, `user_id`)
+VALUES
+  (95, 25);
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: activity_image
@@ -404,6 +436,15 @@ VALUES
     'images\\ieFq-TC4zAcHUIzN51Jbo-17735bb9ce7ba89b5fa2dc8eb2f19588069b7c83.jpg',
     'false',
     91
+  );
+INSERT INTO
+  `activity_image` (`id`, `url`, `private`, `activity_id`)
+VALUES
+  (
+    75,
+    'images\\RxAMMfZNSlNJfn7uqZGFN-331088836_2281256408741917_7994410259147010706_n.jpg',
+    'false',
+    95
   );
 
 # ------------------------------------------------------------
@@ -671,6 +712,70 @@ VALUES
     1,
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTUwMTA0OCwiZXhwIjoxNjk1MDUzMDQ4fQ.Q7w60lCH2ofo2I4WlyAynPgYFn2EbMw0YTChsooOydI'
   );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    91,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTUwMTIxMiwiZXhwIjoxNjk1MDUzMjEyfQ.akr8n2E5CD3kOB-aRR_OVhQCt3MzPL9AcaKu1JlXKEY'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    92,
+    37,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzcsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoiZGVlbiIsImlhdCI6MTY3OTUwNDI4OCwiZXhwIjoxNjk1MDU2Mjg4fQ.JvgHsifLLyzMoIYKFgDvKwxWbros0c5h9abunr6WS5Y'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    93,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTUxNjgyNiwiZXhwIjoxNjk1MDY4ODI2fQ.s_3x8GyFAXFjZbynQUCMKGFp_r_iF8xnw0ZVZ_wN8VU'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    94,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTUxNzg0OCwiZXhwIjoxNjk1MDY5ODQ4fQ.ZUdY2LqaJSNKUnBHVEYikB-F9CRahma3dICa9PoS6ik'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    95,
+    24,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsImRlcGFydG1lbnQiOiLZh9mG2K_Ys9ipIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2Nzk1MTc4ODEsImV4cCI6MTY5NTA2OTg4MX0.uuMN3oc_D9sizYDgPU5nSCh1K9JQb0UmvfLbtzE5U_A'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    96,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTY3OTU2ODg2MSwiZXhwIjoxNjk1MTIwODYxfQ.MtCu9V5TxccQpsLmPjt_IEQggBAvHyXHAWzOigjVB2c'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    97,
+    26,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImRlcGFydG1lbnQiOiLYudmE2YjZhSDYrdin2LPYqNin2KoiLCJ0eXBlIjoidXNlciIsImlhdCI6MTY3OTU2OTkzNCwiZXhwIjoxNjk1MTIxOTM0fQ.YvCmzg1gHM4XvcEGvICAj4PJ4Kspb_apxDS-AhdK4-0'
+  );
+INSERT INTO
+  `user_token` (`id`, `user_id`, `token`)
+VALUES
+  (
+    98,
+    1,
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZGVwYXJ0bWVudCI6Iti52YTZiNmFINit2KfYs9io2KfYqiIsInR5cGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYXJjaGl2ZS5jb20iLCJpYXQiOjE2Nzk1ODEyNTQsImV4cCI6MTY5NTEzMzI1NH0.BDalIPfZGfRW3rw9a3wp3aqfPj4j9sxzOKEZ4TxWB_Q'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: users
@@ -935,6 +1040,46 @@ VALUES
     'هندسة',
     '07512345678',
     'user'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    36,
+    'ggg',
+    'dqd@s.cm',
+    NULL,
+    'تربية',
+    '07512345678',
+    'deen'
+  );
+INSERT INTO
+  `users` (
+    `user_id`,
+    `name`,
+    `email`,
+    `password`,
+    `department`,
+    `phone_number`,
+    `type`
+  )
+VALUES
+  (
+    37,
+    'deen',
+    'deen@deen.com',
+    '$2b$10$VRM96DGhOV8ecn/d4EWOIeUJorc80K9dRyPWtXmRV7AL..uABRslu',
+    'علوم حاسبات',
+    '07512345678',
+    'deen'
   );
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

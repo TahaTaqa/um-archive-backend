@@ -20,7 +20,7 @@ exports.addUser = async ({ name, email, phone, department, type }) => {
 };
 exports.getNames = async (string) => {
   let text =
-    "SELECT user_id AS id,name,email FROM users WHERE name LIKE CONCAT(?,'%')";
+    "SELECT user_id AS id,name,email FROM users WHERE name LIKE CONCAT('%',?,'%')";
   let vals = [string];
   let res = await db
     .promise()
@@ -32,6 +32,7 @@ exports.getNames = async (string) => {
   return res;
 };
 exports.addActivity = async (data, files) => {
+  console.log("here", files);
   let {
     title,
     location,
@@ -46,7 +47,7 @@ exports.addActivity = async (data, files) => {
     department,
     type,
   } = data;
-  barcode = barcode || `AC-${customAlphabet("1234567890", 12)()}`;
+  barcode = barcode || `ACT-${customAlphabet("1234567890", 12)()}`;
   let text =
     "INSERT INTO activities (title,location,summary,start_date,end_date,order_date,barcode_id,link,department,type) VALUES(?,?,?,?,?,?,?,?,?,?); ";
   let vals = [
@@ -72,20 +73,34 @@ exports.addActivity = async (data, files) => {
 
   let text_2 =
     "INSERT INTO activity_image (url,private,activity_id) VALUES (?,?,?)";
-
-  files.map(async (file, i) => {
-    await db
-      .promise()
-      .query(text_2, [
-        file.path,
-        Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
-        id,
-      ])
-      .then(([rows]) => rows)
-      .catch((err) => {
-        throw err;
-      });
-  });
+  if (files.images) {
+    files.images.map(async (file, i) => {
+      await db
+        .promise()
+        .query(text_2, [
+          file.path,
+          Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
+          id,
+        ])
+        .then(([rows]) => rows)
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
+  let text_4 =
+    "INSERT INTO activity_file (url,activity_id,name) VALUES (?,?,?)";
+  if (files.pdf) {
+    files.pdf.map(async (file, i) => {
+      await db
+        .promise()
+        .query(text_4, [file.path, id, file.originalname])
+        .then(([rows]) => rows)
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
   let text_3 =
     "INSERT INTO activities_has_users (activity_id,user_id) VALUES(?,?) ";
   if (participants) {
@@ -204,7 +219,7 @@ exports.deleteUser = async (id) => {
 };
 
 exports.updateActivity = async (data, files) => {
-  console.log(data);
+  console.log(files);
   let {
     title,
     location,
@@ -219,6 +234,7 @@ exports.updateActivity = async (data, files) => {
     department,
     type,
     deleteImages,
+    deleteFiles,
     id,
   } = data;
 
@@ -259,6 +275,21 @@ exports.updateActivity = async (data, files) => {
       });
     });
   }
+  if (deleteFiles === "true") {
+    let text = "SELECT url FROM activity_file WHERE activity_id = ?";
+    let res = await db
+      .promise()
+      .query(text, [id])
+      .then(([rows]) => rows)
+      .catch((err) => {
+        throw err;
+      });
+    res.map((file) => {
+      fs.unlink(file.url, (err) => {
+        console.error(err);
+      });
+    });
+  }
   if (deleteImages === "true") {
     let text = "DELETE FROM activity_image WHERE activity_id = ?";
     let vals = [id];
@@ -270,22 +301,34 @@ exports.updateActivity = async (data, files) => {
         throw err;
       });
   }
-  let text_2 =
-    "INSERT INTO activity_image (url,private,activity_id) VALUES (?,?,?)";
-  console.log(files);
-  files.map(async (file, i) => {
+  if (deleteFiles === "true") {
+    let text = "DELETE FROM activity_file WHERE activity_id = ?";
+    let vals = [id];
     await db
       .promise()
-      .query(text_2, [
-        file.path,
-        Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
-        id,
-      ])
+      .query(text, vals)
       .then(([rows]) => rows)
       .catch((err) => {
         throw err;
       });
-  });
+  }
+  if (files.images) {
+    let text_2 =
+      "INSERT INTO activity_image (url,private,activity_id) VALUES (?,?,?)";
+    files.images.map(async (file, i) => {
+      await db
+        .promise()
+        .query(text_2, [
+          file.path,
+          Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
+          id,
+        ])
+        .then(([rows]) => rows)
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
   await db
     .promise()
     .query("DELETE FROM activities_has_users WHERE activity_id = ?", [id])
@@ -301,6 +344,19 @@ exports.updateActivity = async (data, files) => {
       await db
         .promise()
         .query(text_3, [id, participant.id])
+        .then(([rows]) => rows)
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
+  let text_4 =
+    "INSERT INTO activity_file (url,activity_id,name) VALUES (?,?,?)";
+  if (files.pdf) {
+    files.pdf.map(async (file, i) => {
+      await db
+        .promise()
+        .query(text_4, [file.path, id, file.originalname])
         .then(([rows]) => rows)
         .catch((err) => {
           throw err;

@@ -21,10 +21,13 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
 const images = multer({
-  storage: multerHelper.imageStorage,
-  fileFilter: multerHelper.imageFilter,
+  storage: multerHelper.fileStorage,
+  fileFilter: multerHelper.fileFilter,
   limits: { fileSize: 4000000 },
-}).array("images", "10");
+}).fields([
+  { name: "images", maxCount: 10 },
+  { name: "pdf", maxCount: 10 },
+]);
 const emailObj = multer({
   storage: multerHelper.fileStorage,
   fileFilter: multerHelper.fileFilter,

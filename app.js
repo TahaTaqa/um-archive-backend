@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/files", express.static(path.join(__dirname, "files")));
 app.use("/refresh", refresh);
 app.use("/login", loginRoutes);
 app.use("/signup", signupRoutes);

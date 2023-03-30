@@ -25,7 +25,7 @@ exports.sendEmailNotification = async (emails, title, orderDate, barcode) => {
   var mailOptions = {
     from: "taha.21csp84@student.uomosul.edu.iq",
     to: emails,
-    subject: "تم الموافقة على النشاط",
+    subject: "اعلام بإضافة نشاط",
     html: htmlToSend,
 
     attachments: [
