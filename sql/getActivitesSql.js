@@ -45,7 +45,7 @@ INNER JOIN
     activities_has_users 
         ON a.activity_id = activities_has_users.activity_id 
      
-        WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') AND type LIKE COALESCE(CONCAT(?,'%'),'%')
+        WHERE  COALESCE(json_overlaps(department, ?), true)  AND type LIKE COALESCE(CONCAT(?,'%'),'%')
         AND (title LIKE COALESCE(CONCAT(?,'%'),'%') OR barcode_id LIKE COALESCE(CONCAT(?,'%'),'%')) 
 GROUP BY
     a.activity_id 
@@ -97,7 +97,7 @@ INNER JOIN
     activities_has_users 
         ON a.activity_id = activities_has_users.activity_id 
     
-        WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') 
+        WHERE  COALESCE(json_overlaps(department, ?), true) 
         AND type LIKE COALESCE(CONCAT(?,'%'),'%')
         AND a.start_date >= ?
         AND (title LIKE COALESCE(CONCAT(?,'%'),'%') 
@@ -152,7 +152,7 @@ INNER JOIN
     activities_has_users 
         ON a.activity_id = activities_has_users.activity_id 
        
-        WHERE  department LIKE COALESCE(CONCAT(?,'%'),'%') 
+        WHERE  COALESCE(json_overlaps(department, ?), true) 
         AND type LIKE COALESCE(CONCAT(?,'%'),'%')
         AND a.start_date >= ?
         AND a.end_date <= ?

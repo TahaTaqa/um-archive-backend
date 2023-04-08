@@ -73,6 +73,7 @@ exports.addActivity = (req, res, next) => {
         await addActivity(req.body, req.files);
 
         res.status(201).json({ status: 201 });
+        // res.end();
       } catch (err) {
         next(err);
       }
@@ -92,7 +93,6 @@ exports.getActivites = async (req, res, next) => {
   let userType = req.userType;
   let userDepartment = req.userDepartment;
   let userId = req.id;
-
   try {
     const data = await getActivites(
       req.query,

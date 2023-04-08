@@ -7,7 +7,7 @@ const fs = require("fs");
 exports.addUser = async ({ name, email, phone, department, type }) => {
   let text =
     "INSERT INTO users (name,email,phone_number,department,type) VALUES(?,?,?,?,?)";
-  let vals = [name, email, phone, department, type];
+  let vals = [name, email, phone, JSON.stringify(department), type];
   console.log(vals);
   let res = await db
     .promise()
@@ -32,7 +32,7 @@ exports.getNames = async (string) => {
   return res;
 };
 exports.addActivity = async (data, files) => {
-  console.log("here", files);
+  console.log("here", data);
   let {
     title,
     location,
@@ -128,15 +128,16 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
   const { string, dateFrom, dateTo, department, type } = query;
   let text;
   let vals;
+  console.log(JSON.stringify(department));
   if (dateFrom && dateTo) {
     text = getActivitesSql.sql_3;
-    vals = [department, type, dateFrom, dateTo, string, string];
+    vals = [JSON.stringify(department), type, dateFrom, dateTo, string, string];
   } else if (dateFrom) {
     text = getActivitesSql.sql_2;
-    vals = [department, type, dateFrom, string, string];
+    vals = [JSON.stringify(department), type, dateFrom, string, string];
   } else {
     text = getActivitesSql.sql_1;
-    vals = [department, type, string, string];
+    vals = [JSON.stringify(department), type, string, string];
   }
   if (userType === "supervisor") {
     vals[0] = userDepartment;
@@ -366,9 +367,10 @@ exports.updateActivity = async (data, files) => {
 };
 exports.getUsers = async (query) => {
   let { string, department } = query;
+  console.log("dawda", JSON.stringify(department));
   let text = getUserSql.sql_1;
-  let vals = [string, department];
-  console.log(vals);
+  let vals = [string, JSON.stringify(department)];
+
   let res = await db
     .promise()
     .query(text, vals)

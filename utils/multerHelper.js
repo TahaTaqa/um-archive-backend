@@ -40,9 +40,6 @@ exports.fileStorage = multer.diskStorage({
 exports.fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "application/pdf" ||
-    file.mimetype ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-    file.mimetype === "application/msword" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png"
