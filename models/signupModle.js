@@ -11,3 +11,27 @@ exports.signup = async (email, password) => {
       throw err;
     });
 };
+exports.findCode = async (email) => {
+  console.log("email", email);
+  const text = "SELECT code FROM user_code WHERE email = ?";
+  const vals = [email];
+  let res = await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  return res;
+};
+exports.deleteCode = async (email) => {
+  const text = "delete FROM user_code WHERE email = ?";
+  const vals = [email];
+  await db
+    .promise()
+    .query(text, vals)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+};

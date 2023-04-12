@@ -4,19 +4,36 @@ const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
 const { sendEmailNotification } = require("../middlewares/emailNoti");
 const fs = require("fs");
-exports.addUser = async ({ name, email, phone, department, type }) => {
+exports.addUser = async ({
+  name,
+  email,
+  phone,
+  department,
+  type,
+  customNumber,
+}) => {
   let text =
     "INSERT INTO users (name,email,phone_number,department,type) VALUES(?,?,?,?,?)";
   let vals = [name, email, phone, JSON.stringify(department), type];
-  console.log(vals);
-  let res = await db
+
+  await db
     .promise()
     .query(text, vals)
     .then(([rows]) => rows)
     .catch((err) => {
       throw err;
     });
-  console.log(res);
+
+  let text_2 = "INSERT INTO user_code (code,email) VALUES (?,?)";
+  let vals_2 = [customNumber, email];
+
+  await db
+    .promise()
+    .query(text_2, vals_2)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
 };
 exports.getNames = async (string) => {
   let text =

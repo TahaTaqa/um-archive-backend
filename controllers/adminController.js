@@ -20,6 +20,7 @@ const { dbBackup } = require("../middlewares/db_backup");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
+const { customAlphabet } = require("nanoid");
 const images = multer({
   storage: multerHelper.fileStorage,
   fileFilter: multerHelper.fileFilter,
@@ -49,12 +50,40 @@ exports.addUser = async (req, res, next) => {
 
       return;
     }
-    await addUser(req.body);
 
     if (req.userType !== "admin") {
       next(apiError.unauthorized());
       return;
     }
+    let customNumber = await customAlphabet(
+      "0123456789abcdefghigklmnopqwxyz",
+      6
+    )();
+    req.body.customNumber = customNumber;
+    console.log(customNumber);
+    var transporter = nodemailer.createTransport({
+      service: "hotmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    var mailOptions = {
+      from: process.env.EMAIL,
+      to: "abdulrahman.maher.96@gmail.com",
+      subject: `رسالة من ${req.body.email}`,
+      text: `الرمز الخاص بك هو${customNumber}`,
+    };
+
+    await addUser(req.body);
+    await transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log("error", error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
     res.status(201).json({ status: 201 });
   } catch (err) {
     next(err);
@@ -181,13 +210,13 @@ exports.sendEmail = async (req, res, next) => {
       var transporter = nodemailer.createTransport({
         service: "hotmail",
         auth: {
-          user: "taha.21csp84@student.uomosul.edu.iq",
+          user: process.env.EMAIL,
           pass: process.env.EMAIL_PASSWORD,
         },
       });
 
       var mailOptions = {
-        from: "taha.21csp84@student.uomosul.edu.iq",
+        from: process.env.EMAIL,
         to: "ibn.maher.96@gmail.com",
         subject: `رسالة من ${req.body.email}`,
         text: `${req.body.subject}`,

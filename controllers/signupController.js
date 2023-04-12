@@ -1,11 +1,11 @@
 const { findUserByEmail, addToken } = require("../models/commonModle");
 const apiError = require("../utils/apiError");
 const bycrypt = require("bcrypt");
-const { signup } = require("../models/signupModle");
+const { signup, findCode, deleteCode } = require("../models/signupModle");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, code } = req.body;
   try {
     const user = await findUserByEmail(email);
     if (!user) {
@@ -16,6 +16,11 @@ exports.signup = async (req, res, next) => {
         next(apiError.duplicated("الحساب مسجل مسبقاََ"));
         return;
       } else {
+        let data = await findCode(email);
+        if (code !== data[0].code) {
+          next(apiError.unauthorized("حدث خطأ"));
+          return;
+        }
         let hashedPassword = await bycrypt.hash(password, 10);
 
         let token = await jwt.sign(
@@ -30,6 +35,7 @@ exports.signup = async (req, res, next) => {
         );
         await addToken(user.user_id, token);
         await signup(email, hashedPassword);
+        await deleteCode(email);
         res.status(201).json({
           token: refreashToken,
           id: user.user_id,
