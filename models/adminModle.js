@@ -144,7 +144,6 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
   const { string, dateFrom, dateTo, department, type } = query;
   let text;
   let vals;
-  console.log(JSON.stringify(department));
   if (dateFrom && dateTo) {
     text = getActivitesSql.sql_3;
     vals = [JSON.stringify(department), type, dateFrom, dateTo, string, string];
@@ -156,7 +155,7 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
     vals = [JSON.stringify(department), type, string, string];
   }
   if (userType === "supervisor") {
-    vals[0] = userDepartment;
+    vals[0] = JSON.stringify(userDepartment);
   }
 
   if (userType === "user") {
@@ -383,10 +382,9 @@ exports.updateActivity = async (data, files) => {
 };
 exports.getUsers = async (query) => {
   let { string, department } = query;
-  console.log("dawda", JSON.stringify(department));
   let text = getUserSql.sql_1;
   let vals = [string, JSON.stringify(department)];
-
+  console.log("sqsq", query);
   let res = await db
     .promise()
     .query(text, vals)

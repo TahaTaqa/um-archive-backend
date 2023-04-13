@@ -176,9 +176,12 @@ exports.getUsers = async (req, res, next) => {
     next(apiError.unauthorized());
     return;
   }
+  if (req.userType === "supervisor") {
+    req.query.department = req.userDepartment;
+  }
   try {
     let data = await getUsers(req.query);
-    console.log(data, req.query);
+
     res.status(200).json(data);
   } catch (err) {
     next(err);
