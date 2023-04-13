@@ -1,9 +1,15 @@
 const { findUserByEmail, addToken } = require("../models/commonModle");
 const apiError = require("../utils/apiError");
 const bycrypt = require("bcrypt");
-const { signup, findCode, deleteCode } = require("../models/signupModle");
+const {
+  signup,
+  findCode,
+  deleteCode,
+  updateCode,
+} = require("../models/signupModle");
 const jwt = require("jsonwebtoken");
-
+const { customAlphabet } = require("nanoid");
+const nodemailer = require("nodemailer");
 exports.signup = async (req, res, next) => {
   const { email, password, code } = req.body;
   try {
@@ -43,6 +49,54 @@ exports.signup = async (req, res, next) => {
           status: 201,
         });
       }
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.resendCode = async (req, res, next) => {
+  console.log("ger");
+  try {
+    const { email } = req.body;
+    const user = await findUserByEmail(email);
+    if (!user) {
+      next(apiError.notFound("لا يوجد حساب مسجل"));
+      return;
+    } else {
+      if (user.password) {
+        next(apiError.duplicated("الحساب مسجل مسبقاََ"));
+        return;
+      }
+      console.log(user.password);
+      let customNumber = await customAlphabet(
+        "0123456789abcdefghigklmnopqwxyz",
+        6
+      )();
+      updateCode(email, customNumber);
+      var transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      var mailOptions = {
+        from: process.env.EMAIL,
+        to: "abdulrahman.maher.96@gmail.com",
+        subject: `رسالة من ${req.body.email}`,
+        text: `الرمز الخاص بك هو${customNumber}`,
+      };
+
+      await transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("error", error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(201).json({ message: "successful", status: 201 });
     }
   } catch (err) {
     next(err);

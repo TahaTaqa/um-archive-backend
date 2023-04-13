@@ -71,7 +71,7 @@ exports.addUser = async (req, res, next) => {
 
     var mailOptions = {
       from: process.env.EMAIL,
-      to: "abdulrahman.maher.96@gmail.com",
+      to: req.body.email,
       subject: `رسالة من ${req.body.email}`,
       text: `الرمز الخاص بك هو${customNumber}`,
     };
@@ -157,6 +157,7 @@ exports.updateActivity = async (req, res, next) => {
     return;
   }
   images(req, res, async (err) => {
+    console.log(req.body);
     if (err) {
       next(err);
     } else {

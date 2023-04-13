@@ -35,3 +35,15 @@ exports.deleteCode = async (email) => {
       throw err;
     });
 };
+exports.updateCode = async (email, code) => {
+  let text_2 = "UPDATE user_code SET code = ? WHERE email = ?";
+  let vals_2 = [code, email];
+
+  await db
+    .promise()
+    .query(text_2, vals_2)
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+};

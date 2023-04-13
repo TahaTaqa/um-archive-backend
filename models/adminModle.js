@@ -49,7 +49,6 @@ exports.getNames = async (string) => {
   return res;
 };
 exports.addActivity = async (data, files) => {
-  console.log("here", data);
   let {
     title,
     location,
@@ -237,7 +236,7 @@ exports.deleteUser = async (id) => {
 };
 
 exports.updateActivity = async (data, files) => {
-  console.log(files);
+  console.log(data.department);
   let {
     title,
     location,
