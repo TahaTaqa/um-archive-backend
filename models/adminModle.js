@@ -397,11 +397,11 @@ exports.getUsers = async (query) => {
 };
 
 exports.updateUser = async (data) => {
-  let { name, department, email, phone, supervisor, id } = data;
-  let type = supervisor ? "supervisor" : "user";
+  let { name, department, email, phone, type, id } = data;
+  console.log(type);
   let text =
     "UPDATE users SET name = ?, email = ?, phone_number = ? , department = ? ,type = ? WHERE user_id = ?";
-  let vals = [name, email, phone, department, type, id];
+  let vals = [name, email, phone, JSON.stringify(department), type, id];
   await db
     .promise()
     .query(text, vals)
