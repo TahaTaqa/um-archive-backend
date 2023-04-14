@@ -84,9 +84,9 @@ exports.resendCode = async (req, res, next) => {
 
       var mailOptions = {
         from: process.env.EMAIL,
-        to: "abdulrahman.maher.96@gmail.com",
+        to: email,
         subject: `رسالة من ${req.body.email}`,
-        text: `الرمز الخاص بك هو${customNumber}`,
+        text: `الرمز الخاص بك هو \n ${customNumber}`,
       };
 
       await transporter.sendMail(mailOptions, function (error, info) {

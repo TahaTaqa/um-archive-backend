@@ -73,7 +73,7 @@ exports.addUser = async (req, res, next) => {
       from: process.env.EMAIL,
       to: req.body.email,
       subject: `رسالة من ${req.body.email}`,
-      text: `الرمز الخاص بك هو${customNumber}`,
+      text: `الرمز الخاص بك هو \n ${customNumber}`,
     };
 
     await addUser(req.body);
