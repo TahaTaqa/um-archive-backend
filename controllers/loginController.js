@@ -76,7 +76,7 @@ exports.reset = async (req, res, next) => {
     });
     await reset(user.user_id, token);
     var transporter = nodemailer.createTransport({
-      service: "hotmail",
+      service: "gmail",
       auth: {
         user: "taha.21csp84@student.uomosul.edu.iq",
         pass: process.env.EMAIL_PASSWORD,

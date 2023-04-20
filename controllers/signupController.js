@@ -75,7 +75,7 @@ exports.resendCode = async (req, res, next) => {
       )();
       updateCode(email, customNumber);
       var transporter = nodemailer.createTransport({
-        service: "hotmail",
+        service: "gmail",
         auth: {
           user: process.env.EMAIL,
           pass: process.env.EMAIL_PASSWORD,

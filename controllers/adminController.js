@@ -8,6 +8,7 @@ const {
   getUsers,
   deleteUser,
   updateUser,
+  getUserActivities,
 } = require("../models/adminModle");
 const {
   findUserByEmail,
@@ -62,7 +63,7 @@ exports.addUser = async (req, res, next) => {
     req.body.customNumber = customNumber;
     console.log(customNumber);
     var transporter = nodemailer.createTransport({
-      service: "hotmail",
+      service: "gmail",
       auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASSWORD,
@@ -102,7 +103,6 @@ exports.addActivity = (req, res, next) => {
         await addActivity(req.body, req.files);
 
         res.status(201).json({ status: 201 });
-        // res.end();
       } catch (err) {
         next(err);
       }
@@ -164,6 +164,7 @@ exports.updateActivity = async (req, res, next) => {
       try {
         await updateActivity(req.body, req.files);
         res.status(200).json({ status: 204 });
+        // res.end("");
       } catch (err) {
         next(err);
       }
@@ -212,7 +213,7 @@ exports.sendEmail = async (req, res, next) => {
       next(err);
     } else {
       var transporter = nodemailer.createTransport({
-        service: "hotmail",
+        service: "gmail",
         auth: {
           user: process.env.EMAIL,
           pass: process.env.EMAIL_PASSWORD,
@@ -270,5 +271,13 @@ exports.backup = async (req, res, next) => {
     res.status(200).download(path.join(__dirname, "../backup/dump.sql"));
   } catch (err) {
     next(err);
+  }
+};
+exports.getUserActivities = async (req, res, next) => {
+  try {
+    let data = await getUserActivities(req.query.userId);
+    res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
   }
 };

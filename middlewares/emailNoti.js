@@ -15,15 +15,15 @@ exports.sendEmailNotification = async (emails, title, orderDate, barcode) => {
   const htmlToSend = template(replacements);
 
   var transporter = nodemailer.createTransport({
-    service: "hotmail",
+    service: "gmail",
     auth: {
-      user: "taha.21csp84@student.uomosul.edu.iq",
+      user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
   });
 
   var mailOptions = {
-    from: "taha.21csp84@student.uomosul.edu.iq",
+    from: process.env.EMAIL,
     to: emails,
     subject: "اعلام بإضافة نشاط",
     html: htmlToSend,

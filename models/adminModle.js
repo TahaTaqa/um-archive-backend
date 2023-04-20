@@ -4,6 +4,7 @@ const { getActivitesSql } = require("../sql/getActivitesSql");
 const { getUserSql } = require("../sql/getUsersSql");
 const { sendEmailNotification } = require("../middlewares/emailNoti");
 const fs = require("fs");
+const { updateEmailNoti } = require("../middlewares/updateEmailNoti");
 exports.addUser = async ({
   name,
   email,
@@ -243,7 +244,7 @@ exports.updateActivity = async (data, files) => {
     dateFrom,
     dateTo,
     orderDate,
-
+    barcode,
     privateOptin,
     participants,
     link,
@@ -379,6 +380,14 @@ exports.updateActivity = async (data, files) => {
         });
     });
   }
+  try {
+    let emails = JSON.parse(participants).map(
+      (participant) => participant.email
+    );
+    updateEmailNoti(emails, title, barcode);
+  } catch (err) {
+    console.log(err);
+  }
 };
 exports.getUsers = async (query) => {
   let { string, department } = query;
@@ -409,4 +418,14 @@ exports.updateUser = async (data) => {
     .catch((err) => {
       throw err;
     });
+};
+exports.getUserActivities = async (user_id) => {
+  let res = await db
+    .promise()
+    .query(getActivitesSql.sql_4, [user_id])
+    .then(([rows]) => rows)
+    .catch((err) => {
+      throw err;
+    });
+  return res;
 };
