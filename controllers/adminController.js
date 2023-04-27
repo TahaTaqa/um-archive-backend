@@ -223,7 +223,7 @@ exports.sendEmail = async (req, res, next) => {
 
       var mailOptions = {
         from: process.env.EMAIL,
-        to: "ibn.maher.96@gmail.com",
+        to: "taha.21csp84@student.uomosul.edu.iq",
         subject: `رسالة من ${req.body.email} (${req.body.name})`,
         text: `${req.body.subject}`,
 

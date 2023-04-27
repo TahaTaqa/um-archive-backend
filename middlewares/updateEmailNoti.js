@@ -15,7 +15,7 @@ exports.updateEmailNoti = async (emails, title, barcode) => {
     from: process.env.EMAIL,
     to: emails,
     subject: "اعلام بتعديل نشاط",
-    text: `${title} تم تعديل النشاط بعنوان  \n ${barcode} الرمز الشريطي `,
+    text: `تم تعديل النشاط بعنوان \n${title} \n${barcode} الرمز الشريطي `,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
