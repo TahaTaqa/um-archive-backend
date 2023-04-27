@@ -4,6 +4,6 @@ exports.getUserSql = {
     left JOIN activities_has_users as a 
         ON u.user_id = a.user_id 
   WHERE name LIKE COALESCE(CONCAT('%',?,'%'),'%') 
-      AND  COALESCE(json_overlaps(department, ?), true) 
+      AND  COALESCE(json_overlaps(department, ?), true) AND u.type != 'admin'
   GROUP BY u.user_id`,
 };

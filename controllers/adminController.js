@@ -212,6 +212,7 @@ exports.sendEmail = async (req, res, next) => {
     if (err) {
       next(err);
     } else {
+      console.log(req.body);
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -223,7 +224,7 @@ exports.sendEmail = async (req, res, next) => {
       var mailOptions = {
         from: process.env.EMAIL,
         to: "ibn.maher.96@gmail.com",
-        subject: `رسالة من ${req.body.email}`,
+        subject: `رسالة من ${req.body.email} (${req.body.name})`,
         text: `${req.body.subject}`,
 
         attachments: [],
