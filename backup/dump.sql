@@ -915,7 +915,7 @@ VALUES
   (
     29,
     'عبدالرحمن ماهر حسن',
-    'ibn.maher.96@gmail.com',
+    'taha.21csp84@student.uomosul.edu.iq',
     '$2b$10$VGcRSKZTUJJT1UxMwR7Rh.dcxWtcxjveQF5DrVWDpkwhW024J0TTG',
     'هندسة',
     '07512345678',
