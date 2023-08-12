@@ -5,6 +5,7 @@ const { getUserSql } = require("../sql/getUsersSql");
 const { sendEmailNotification } = require("../middlewares/emailNoti");
 const fs = require("fs");
 const { updateEmailNoti } = require("../middlewares/updateEmailNoti");
+const utf8 = require("utf8")
 exports.addUser = async ({
   name,
   email,
@@ -25,7 +26,7 @@ exports.addUser = async ({
       throw err;
     });
 
-  let text_2 = "INSERT INTO user_code (code,email) VALUES (?,?)";
+  let text_2 = "REPLACE INTO user_code (code,email) VALUES (?,?)";
   let vals_2 = [customNumber, email];
 
   await db
@@ -96,7 +97,7 @@ exports.addActivity = async (data, files) => {
         .promise()
         .query(text_2, [
           file.path,
-          Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
+          false,
           id,
         ])
         .then(([rows]) => rows)
@@ -111,7 +112,7 @@ exports.addActivity = async (data, files) => {
     files.pdf.map(async (file, i) => {
       await db
         .promise()
-        .query(text_4, [file.path, id, file.originalname])
+        .query(text_4, [file.path, id, utf8.decode(file.originalname)])
         .then(([rows]) => rows)
         .catch((err) => {
           throw err;
@@ -156,7 +157,7 @@ exports.getActivites = async (query, userType, userDepartment, userId) => {
     vals = [JSON.stringify(department), type, string, string];
   }
   if (userType === "supervisor") {
-    vals[0] = JSON.stringify(userDepartment);
+    vals[0] = JSON.stringify([userDepartment, "مشترك"]);
   }
 
   if (userType === "user") {
@@ -253,6 +254,7 @@ exports.updateActivity = async (data, files) => {
     deleteImages,
     deleteFiles,
     id,
+sendNotification
   } = data;
 
   let text =
@@ -337,7 +339,7 @@ exports.updateActivity = async (data, files) => {
         .promise()
         .query(text_2, [
           file.path,
-          Array.isArray(privateOptin) ? privateOptin[i] : privateOptin,
+          false,
           id,
         ])
         .then(([rows]) => rows)
@@ -373,7 +375,7 @@ exports.updateActivity = async (data, files) => {
     files.pdf.map(async (file, i) => {
       await db
         .promise()
-        .query(text_4, [file.path, id, file.originalname])
+        .query(text_4, [file.path, id, utf8.decode(file.originalname)])
         .then(([rows]) => rows)
         .catch((err) => {
           throw err;
@@ -381,11 +383,12 @@ exports.updateActivity = async (data, files) => {
     });
   }
   try {
+if(sendNotification === 'true'){
     let emails = JSON.parse(participants).map(
       (participant) => participant.email
     );
     updateEmailNoti(emails, title, barcode);
-  } catch (err) {
+ } } catch (err) {
     console.log(err);
   }
 };
@@ -419,10 +422,20 @@ exports.updateUser = async (data) => {
       throw err;
     });
 };
-exports.getUserActivities = async (user_id) => {
+exports.getUserActivities = async (query) => {
+  const { userId, dateFrom, dateTo } = query;
+  const { sql_4, sql_5, sql_6 } = getActivitesSql;
+  let sql;
+  if (dateFrom && dateTo) {
+    sql = sql_6;
+  } else if (dateFrom) {
+    sql = sql_5;
+  } else {
+    sql = sql_4;
+  }
   let res = await db
     .promise()
-    .query(getActivitesSql.sql_4, [user_id])
+    .query(sql, [userId, dateFrom, dateTo])
     .then(([rows]) => rows)
     .catch((err) => {
       throw err;

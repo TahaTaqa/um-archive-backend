@@ -1,0 +1,17 @@
+version: "3"
+services:
+  um-archive:
+    image: um-archive
+    build:
+      context: um-archive
+      dockerfile: ./um-archive/.dockerfile
+    ports:
+    - 3000:80
+  backend:
+    image: backend
+    build:
+      context: backend
+      dockerfile: ./backend/.dockerfile
+    ports:
+    - 5000:5000
+

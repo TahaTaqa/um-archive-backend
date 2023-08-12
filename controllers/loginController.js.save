@@ -90,13 +90,13 @@ exports.reset = async (req, res, next) => {
       html: `<p> لتغيير الرمز اضغط  <a href="http://144.86.228.218:9888/reset-password/:${token}">هنا </a> </p>`,
     };
 
-     transporter.sendMail(mailOptions, function (error, info) {
-       if (error) {
-         console.log(error);
-       } else {
-         console.log("Email sent: " + info.response);
-       }
-     });
+    // transporter.sendMail(mailOptions, function (error, info) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //   }
+    // });
     res.status(200).json({ status: 200 });
   } catch (err) {
     next(err);

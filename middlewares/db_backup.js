@@ -3,7 +3,7 @@ exports.dbBackup = async () =>
   await mysqldump({
     connection: {
       host: "localhost",
-      user: "root",
+      user: "taha",
       database: "archive",
       password: process.env.PASSWORD,
     },

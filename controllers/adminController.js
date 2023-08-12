@@ -22,6 +22,7 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
 const { customAlphabet } = require("nanoid");
+const utf8 = require("utf8");
 const images = multer({
   storage: multerHelper.fileStorage,
   fileFilter: multerHelper.fileFilter,
@@ -33,7 +34,7 @@ const images = multer({
 const emailObj = multer({
   storage: multerHelper.fileStorage,
   fileFilter: multerHelper.fileFilter,
-  limits: { fileSize: 10000000 },
+  limits: { fileSize: 1000000000 },
 }).fields([
   {
     name: "file",
@@ -73,8 +74,17 @@ exports.addUser = async (req, res, next) => {
     var mailOptions = {
       from: process.env.EMAIL,
       to: req.body.email,
-      subject: `رسالة من ${req.body.email}`,
-      text: `الرمز الخاص بك هو \n ${customNumber}`,
+      subject: `رسالة من مسؤول نظام أرشفة نشاطات المنتسبين`,
+      html: `<p>الرمز الخاص بك هو <br/> ${customNumber} <br/>
+        نظام ارشفة نشاطات المنتسبين <br/>
+        هذا النظام هو جزء من متطلبات نيل شهادة الماجستير في تخصص
+         علوم الحاسوب من قبل الطالب<br/>
+        طه عادل طه طاقة<br/>
+        بإشراف<br/>
+        أ. م. د. اياد حسين عبدالقادر <br/>
+سوف يتم إدخال النشاطات الخاصة بكم إلى النظام حين توفرها<br/>
+يرجى الدخول إلى الرابط أدناه وإكمال عملية تكوين الحساب الخاص بك .. لطفا <br/>
+<a href='http://144.86.228.218:9888'>http://144.86.228.218:9888</a></p>`,
     };
 
     await addUser(req.body);
@@ -97,6 +107,7 @@ exports.addActivity = (req, res, next) => {
   }
   images(req, res, async (err) => {
     if (err) {
+console.log(err);
       next(err);
     } else {
       try {
@@ -104,6 +115,7 @@ exports.addActivity = (req, res, next) => {
 
         res.status(201).json({ status: 201 });
       } catch (err) {
+console.log(err)
         next(err);
       }
     }
@@ -208,11 +220,14 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 exports.sendEmail = async (req, res, next) => {
-  emailObj(req, res, async (err) => {
+
+ emailObj(req, res, async (err) => {
+
     if (err) {
+console.log(err)
       next(err);
     } else {
-      console.log(req.body);
+      
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -231,22 +246,23 @@ exports.sendEmail = async (req, res, next) => {
       };
       if (req.files.file) {
         mailOptions.attachments.push({
-          filename: `${req.files.file[0].originalname}`,
+          filename: `${utf8.decode(req.files.file[0].originalname)}`,
           path: req.files.file[0].path,
           contentType: "application/pdf",
         });
       }
       if (req.files.image) {
         mailOptions.attachments.push({
-          filename: `${req.files.image[0].originalname}`,
+          filename: `${utf8.decode(req.files.image[0].originalname)}`,
           path: req.files.image[0].path,
           contentType: "image/*",
         });
       }
-      await transporter.sendMail(mailOptions, function (error, info) {
+      await  transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           next(err);
         } else {
+res.status(200).json({ status: 200 });
           console.log("Email sent: " + info.response);
         }
       });
@@ -263,7 +279,7 @@ exports.sendEmail = async (req, res, next) => {
     }
   });
 
-  res.status(200).json({ status: 200 });
+ 
 };
 exports.backup = async (req, res, next) => {
   try {
@@ -276,7 +292,7 @@ exports.backup = async (req, res, next) => {
 };
 exports.getUserActivities = async (req, res, next) => {
   try {
-    let data = await getUserActivities(req.query.userId);
+    let data = await getUserActivities(req.query);
     res.status(200).json(data);
   } catch (err) {
     console.log(err);

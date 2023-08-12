@@ -1,3 +1,4 @@
+
 const { findUserByEmail, addToken } = require("../models/commonModle");
 const apiError = require("../utils/apiError");
 const bycrypt = require("bcrypt");
@@ -12,6 +13,7 @@ const { customAlphabet } = require("nanoid");
 const nodemailer = require("nodemailer");
 exports.signup = async (req, res, next) => {
   const { email, password, code } = req.body;
+console.log(code,email)
   try {
     const user = await findUserByEmail(email);
     if (!user) {
@@ -23,6 +25,7 @@ exports.signup = async (req, res, next) => {
         return;
       } else {
         let data = await findCode(email);
+console.log(data)
         if (code !== data[0].code) {
           next(apiError.unauthorized("حدث خطأ"));
           return;
@@ -86,7 +89,15 @@ exports.resendCode = async (req, res, next) => {
         from: process.env.EMAIL,
         to: email,
         subject: `رسالة من ${req.body.email}`,
-        text: `الرمز الخاص بك هو \n ${customNumber}`,
+        html: `<p>الرمز الخاص بك هو <br/> ${customNumber} <br/>
+        نظام ارشفة نشاطات المنتسبين <br/>
+        هذا النظام هو جزء من متطلبات نيل شهادة الماجستير في تخصص
+         علوم الحاسوب من قبل الطالب<br/>
+        طه عادل طه طاقة<br/>
+        بإشراف<br/>
+        أ. م. د. اياد حسين عبدالقادر <br/>
+يرجى الدخول إلى الرابط أدناه وإكمال عملية تكوين الحساب الخاص بك .. لطفا <br/>
+<a href='http://144.86.228.218:9888'>http://144.86.228.218:9888</a></p>`,
       };
 
       await transporter.sendMail(mailOptions, function (error, info) {
