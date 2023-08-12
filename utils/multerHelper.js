@@ -1,5 +1,6 @@
 const multer = require("multer");
 const nanoid = require("nanoid").nanoid;
+const utf8 = require("utf8")
 exports.imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -33,7 +34,7 @@ exports.fileStorage = multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    cb(null, nanoid() + "-" + file.originalname);
+    cb(null,  utf8.decode(file.originalname) + "-" +  nanoid() +"." + file.mimetype.split('/')[1]);
   },
 });
 

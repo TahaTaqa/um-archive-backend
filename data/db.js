@@ -3,7 +3,7 @@ require("dotenv").config();
 
 let db = mysql.createPool({
   host: "localhost",
-  user: "root",
+  user: "taha",
   database: "archive",
   password: process.env.PASSWORD,
   dateStrings: true,

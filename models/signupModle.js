@@ -36,7 +36,7 @@ exports.deleteCode = async (email) => {
     });
 };
 exports.updateCode = async (email, code) => {
-  let text_2 = "UPDATE user_code SET code = ? WHERE email = ?";
+  let text_2 = "INSERT INTO user_code (code,email) VALUES(?,?) ON DUPLICATE KEY UPDATE  code = VALUES(code)";
   let vals_2 = [code, email];
 
   await db

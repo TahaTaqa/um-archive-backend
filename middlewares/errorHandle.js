@@ -1,6 +1,6 @@
 const apiError = require("../utils/apiError");
 const errorHandle = (err, req, res, next) => {
-  console.log(err.message);
+  console.log(err);
   if (err.message === "File too large") {
     console.log("dwdwd", "dwdwd");
     res.status(403).json({ message: "حجم الملف كبير", status: 403 });
