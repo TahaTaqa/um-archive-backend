@@ -5,8 +5,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y python3
 RUN apt-get install -y curl
 
-RUN mkdir -p /app
-WORKDIR /app
+WORKDIR /usr/app
+COPY ./ /usr/app
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
@@ -22,8 +22,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y nginx
 
-COPY backend/ .
-COPY archive.sql .
 RUN npm install
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -32,7 +30,7 @@ RUN service mysql start \
   && mysql -e "CREATE DATABASE archive;" \
   && mysql -e "CREATE USER taha@localhost IDENTIFIED BY 'tt77tt77';" \
   && mysql -e "grant all privileges on archive.* to taha@localhost;" \
-  && mysql archive < archive.sql
+  && mysql archive < backup/dump.sql
 
 EXPOSE 5000
 ENTRYPOINT service mysql start && npm run start
